@@ -1,0 +1,111 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:greenmind/feature/delimitation/bloc/map_state.dart';
+import 'package:greenmind/feature/delimitation/handler.dart';
+import 'package:greenmind/feature/delimitation/widgets/bottom_browse.dart';
+import 'package:greenmind/feature/delimitation/widgets/bottom_stake.dart';
+import 'package:greenmind/feature/delimitation/widgets/map_body.dart';
+import 'package:greenmind/feature/delimitation/widgets/mini_map.dart';
+import 'package:greenmind/feature/delimitation/widgets/text_field_map.dart';
+
+import 'bloc/map_utils.dart';
+import 'widgets/map_app_bar.dart';
+
+class DelimiteMap extends StatefulWidget {
+  @override
+  _DelimiteMapState createState() => _DelimiteMapState();
+}
+
+class _DelimiteMapState extends State<DelimiteMap> {
+  GoogleMapController? _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    //_getCurrentLocation();
+    if (MapUtils.icon == null) {
+      MapUtils.mapUtilsFunctions
+          .getBytesFromAsset('assets/map/pin.png', 50)
+          .then((value) => MapUtils.icon = value);
+    }
+
+    //_startListening();
+  }
+
+  void onSerachAddMaker(LatLng latLng) async {
+    MapUtils.mapUtilsFunctions.clearPoints();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    await Handler.requestLocationPermission();
+    bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (isLocationServiceEnabled) {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      //_path.add(LatLng(position.latitude, position.longitude));
+      setState(() {
+        MapUtils.currentPosition = position;
+      });
+    }
+  }
+
+  final TextEditingController _placeController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: MapAppBar(),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     children: [
+      //       Container(
+      //         height: 50,
+      //         decoration: BoxDecoration(
+      //             //color: Colors.red,
+      //             image: DecorationImage(
+      //                 image: AssetImage(
+      //                   'assets/images/greenmind.png',
+      //                 ),
+      //                 fit: BoxFit.cover)),
+      //       ),
+      //       Divider(),
+      //       ListTile(
+      //         title: Text('Élément 1'),
+      //         onTap: () {},
+      //       ),
+      //       ListTile(
+      //         title: Text('Élément 2'),
+      //         onTap: () {},
+      //       ),
+      //     ],
+      //   ),
+      // ),
+
+      body: MapUtils.currentPosition != null
+          ? Stack(
+              children: [
+                MapBody(),
+                MiniMap(),
+                if (MapUtils.mapNotifier.value == MODEDELIMITE.map)
+                  TextFieldMap(textEditingController: _placeController),
+              ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
+      floatingActionButton: ValueListenableBuilder<MODEDELIMITE>(
+        valueListenable: MapUtils.mapNotifier,
+        builder: (context, value, child) => (value == MODEDELIMITE.browse)
+            ? const BottomBrowse()
+            : (value == MODEDELIMITE.stake)
+                ? const BotttomStake()
+                : SizedBox(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}

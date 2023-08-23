@@ -1,0 +1,122 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
+import 'package:greenmind/data/models/weather_data_agregation_model.dart';
+import 'package:greenmind/feature/delimitation/map_sample.dart';
+import 'package:greenmind/feature/home/home.dart';
+import 'package:greenmind/feature/login_page/login_page.dart';
+import 'package:greenmind/tests/weather_detail_page.dart';
+
+import 'feature/map/map.dart';
+
+class AppRouter extends GoRouter {
+  AppRouter()
+      : super(
+          routes: <RouteBase>[
+            GoRoute(
+              path: '/',
+              builder: (BuildContext context, GoRouterState state) {
+                return Home();
+              },
+              routes: <RouteBase>[
+                GoRoute(
+                  path: 'map',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return MapScreen();
+                  },
+                ),
+                GoRoute(
+                  path: 'weatherDetail',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return WeatherDetailPage(
+                      weatherDataAgregationModel:
+                          (state.extra as WeatherDataAgregationModel),
+                    );
+                  },
+                ),
+
+                // GoRoute(
+                //   path: 'login',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return Login();
+                //   },
+                // ),
+                // GoRoute(
+                //   path: 'signin',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return SignIn();
+                //   },
+                // ),
+                // GoRoute(
+                //   path: 'singup',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return SignUp();
+                //   },
+                // ),
+                // GoRoute(
+                //   path: 'accountSetup',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return AccountSetup();
+                //   },
+                // ),
+                // GoRoute(
+                //   path: 'app',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return App();
+                //   },
+                //   routes: <RouteBase>[
+                //     GoRoute(
+                //       path: 'profil',
+                //       builder: (BuildContext context, GoRouterState state) {
+                //         return ProfilPage();
+                //       },
+                //     ),
+                //     GoRoute(
+                //       path: 'history',
+                //       builder: (BuildContext context, GoRouterState state) {
+                //         return HistoryPage();
+                //       },
+                //     ),
+                //     GoRoute(
+                //       path: 'track',
+                //       builder: (BuildContext context, GoRouterState state) {
+                //         return TrackPage();
+                //       },
+                //     ),
+                //     GoRoute(
+                //       path: 'notification',
+                //       builder: (BuildContext context, GoRouterState state) {
+                //         return NotificationPage();
+                //       },
+                //     ),
+                //     GoRoute(
+                //       path: 'makeOrder',
+                //       builder: (BuildContext context, GoRouterState state) {
+                //         return MakeOrderPage();
+                //       },
+                //     ),
+                //   ],
+                // ),
+                // GoRoute(
+                //   path: 'homePage',
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return HomePage();
+                //   },
+                // ),
+              ],
+            ),
+          ],
+        );
+}
+
+
+
+// We use name route
+// All our routes will be available here
+// final Map<String, WidgetBuilder> routes = {
+//    HomeNavigation.routeName: (context) => HomeNavigation(),
+//    Home.routeName: (context) => Home(),
+//    MapScreen.routeName: (context) => MapScreen(),
+   
+
+// };
