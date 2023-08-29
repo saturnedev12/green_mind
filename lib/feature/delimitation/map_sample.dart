@@ -89,7 +89,7 @@ class _DelimiteMapState extends State<DelimiteMap> {
           ? Stack(
               children: [
                 MapBody(),
-                MiniMap(),
+                // MiniMap(),
                 if (MapUtils.mapNotifier.value == MODEDELIMITE.map)
                   TextFieldMap(textEditingController: _placeController),
               ],
@@ -97,14 +97,15 @@ class _DelimiteMapState extends State<DelimiteMap> {
           : const Center(
               child: CircularProgressIndicator(),
             ),
-      floatingActionButton: ValueListenableBuilder<MODEDELIMITE>(
-        valueListenable: MapUtils.mapNotifier,
-        builder: (context, value, child) => (value == MODEDELIMITE.browse)
-            ? const BottomBrowse()
-            : (value == MODEDELIMITE.stake)
-                ? const BotttomStake()
-                : SizedBox(),
-      ),
+      floatingActionButton: BotttomStake(),
+      // ValueListenableBuilder<MODEDELIMITE>(
+      //   valueListenable: MapUtils.mapNotifier,
+      //   builder: (context, value, child) => (value == MODEDELIMITE.browse)
+      //       ? const BottomBrowse()
+      //       : (value == MODEDELIMITE.stake)
+      //           ? const BotttomStake()
+      //           : SizedBox(),
+      //),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

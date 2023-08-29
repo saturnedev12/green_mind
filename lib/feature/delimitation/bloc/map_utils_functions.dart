@@ -80,7 +80,11 @@ class MapUtilsFunctions {
   }
 
   addDistance({required BuildContext context}) async {
-    if ((MapUtils.path.length > 2)) {
+    /***
+     * ajouter le un point q lq position initial pour boucler la map
+     * mettre a jours la distance entre le dernier point et le premier
+    */
+    if ((MapUtils.path.length >= 2)) {
       MapUtils.path.add(MapUtils.path.first);
       MapUtils.markers.remove(MapUtils.markerToShow.last);
       MapUtils.markerToShow.removeLast();
@@ -107,13 +111,12 @@ class MapUtilsFunctions {
         );
 
         final Marker dMarker = Marker(
-            markerId: MarkerId(
-                "${middlePosition.latitude}${middlePosition.longitude}"),
+            markerId: MarkerId(MapUtils.markerToShowID[i].toString()),
             position: LatLng(middlePosition.latitude, middlePosition.longitude),
+            infoWindow: InfoWindow(title: "DISTANCE"),
             icon: customMarkerIcon);
         MapUtils.markerToShow.add(dMarker);
         MapUtils.markers.add(dMarker);
-        print("iterations $i");
       }
     });
     context.read<MapBloc>().add(SendPositionEvent());
@@ -144,10 +147,10 @@ class MapUtilsFunctions {
       );
       MapUtils.markers.add(
         Marker(
-          markerId: MarkerId("${position.latitude}${position.longitude}"),
+          markerId: MarkerId(MapUtils.markerCounter.toString()),
           position: LatLng(position.latitude, position.longitude),
           icon: BitmapDescriptor.fromBytes(MapUtils.icon!),
-          infoWindow: InfoWindow(title: 'B${MapUtils.markerCounter}'),
+          infoWindow: InfoWindow(title: 'B${MapUtils.borneMarkerCounter}'),
         ),
       );
       MapUtils.polygons.add(
@@ -163,33 +166,78 @@ class MapUtilsFunctions {
     context.read<MapBloc>().add(SendPositionEvent());
   }
 
+  addPoint(Position position, {required BuildContext context}) async {
+    /**
+     * le compter pass de 2 en 2
+     */
+    MapUtils.markerCounter += 2;
+    MapUtils.borneMarkerCounter += 1;
+    if (MapUtils.markerCounter > 2) {
+      MapUtils.markerToShowID.add(MapUtils.markerCounter - 1);
+    }
+    await Future.sync(() async {
+      MapUtils.path.add(LatLng(position.latitude, position.longitude));
+
+      await _repaint(position: position, context: context);
+    });
+    await addDistance(context: context);
+    // if (MapUtils.mapNotifier.value != MODEDELIMITE.browse) {
+
+    // }
+    context.read<MapBloc>().add(SendPositionEvent());
+  }
+
+  /// clean points
   rollBackPoint({required BuildContext context}) async {
     rollbackMarkers();
     await Future.sync(() {
-      MapUtils.path.removeLast();
-
       MapUtils.polylines.remove(MapUtils.polylines.last);
+      MapUtils.markers.removeWhere(
+          (e) => e.markerId.value == MapUtils.markerCounter.toString());
+      MapUtils.markers.removeWhere(
+          (e) => e.markerId.value == (MapUtils.markerCounter - 1).toString());
+      MapUtils.path.removeLast();
+      addDistance(context: context);
+      // if (MapUtils.mapNotifier.value != MODEDELIMITE.browse) {
 
-      if (MapUtils.mapNotifier.value != MODEDELIMITE.browse) {
-        addDistance(context: context);
-      }
+      // }
     });
+    MapUtils.markerCounter -= 2;
     context.read<MapBloc>().add(SendPositionEvent());
   }
 
-  undoPoint({required BuildContext context}) async {
-    log(MapUtils.path.toString());
+  /// clean Marker
+  rollbackMarkers() async {
+    await Future.sync(() {
+      List<Marker> setList = MapUtils.markers.toList();
+      setList.removeLast();
 
-    if (MapUtils.pathBuffer.length > MapUtils.path.length) {
-      await Future.sync(() {
-        MapUtils.path.add(MapUtils.pathBuffer.first);
-      });
-      await Future.sync(() {
-        MapUtils.pathBuffer.removeLast();
-      });
-    }
-    context.read<MapBloc>().add(SendPositionEvent());
+      // if (setList.length >= 3) {
+      //   setList.removeRange(setList.length - 3, setList.length);
+      // } else {
+      //   setList.removeLast();
+      // }
+      inspect(setList);
+      MapUtils.markerToShow.removeLast();
+      MapUtils.markers.clear();
+      MapUtils.markers.addAll(Set<Marker>.from(setList));
+      MapUtils.markerCounter = 0;
+    });
   }
+
+  // undoPoint({required BuildContext context}) async {
+  //   log(MapUtils.path.toString());
+
+  //   if (MapUtils.pathBuffer.length > MapUtils.path.length) {
+  //     await Future.sync(() {
+  //       MapUtils.path.add(MapUtils.pathBuffer.first);
+  //     });
+  //     await Future.sync(() {
+  //       MapUtils.pathBuffer.removeLast();
+  //     });
+  //   }
+  //   context.read<MapBloc>().add(SendPositionEvent());
+  // }
 
   clearPoints() async {
     await Future.sync(() {
@@ -204,18 +252,6 @@ class MapUtilsFunctions {
     });
   }
 
-  addPoint(Position position, {required BuildContext context}) async {
-    MapUtils.markerCounter += 1;
-    await Future.sync(() async {
-      MapUtils.path.add(LatLng(position.latitude, position.longitude));
-
-      await _repaint(position: position, context: context);
-    });
-    if (MapUtils.mapNotifier.value != MODEDELIMITE.browse) {
-      await addDistance(context: context);
-    }
-  }
-
   void updateSecondMapPosition(LatLng currentPosition) async {
     if (MapUtils.secondMapController != null) {
       double zoom = await MapUtils.mapController!.getZoomLevel();
@@ -225,21 +261,6 @@ class MapUtilsFunctions {
         zoom: zoom - 3,
       )));
     }
-  }
-
-  rollbackMarkers() {
-    List<Marker> setList = MapUtils.markers.toList();
-
-    if (setList.length >= 3) {
-      setList.removeRange(setList.length - 3, setList.length);
-    } else {
-      setList.removeLast();
-    }
-    MapUtils.markerToShow.removeLast();
-    inspect(setList);
-    MapUtils.markers.clear();
-    MapUtils.markers.addAll(Set<Marker>.from(setList));
-    MapUtils.markerCounter = 0;
   }
 
   displayPopupInfo({required BuildContext context}) {

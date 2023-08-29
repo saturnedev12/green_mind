@@ -1,3 +1,4 @@
+import 'package:animated_button/animated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -38,18 +39,71 @@ class _BotttomStakeState extends State<BotttomStake> {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
+    return AnimatedButton(
       onPressed: () async {
         await Future.sync(() async {
-          Position? pos = await _getCurrentLocation();
-          if (pos != null) {
-            MapUtils.mapUtilsFunctions.addPoint(pos, context: context);
-          }
+          //Position? pos = await _getCurrentLocation();
+          // if (pos != null) {
+          //   MapUtils.mapUtilsFunctions.addPoint(pos, context: context);
+          // }
+          MapFunctions(context: context).addPointHandler(
+              position: Position(
+                  longitude: MapUtils.bigMapPosition!.target.longitude,
+                  latitude: MapUtils.bigMapPosition!.target.latitude,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  heading: 0,
+                  speed: 0,
+                  speedAccuracy: 0));
         });
-
-        //context.read<MapBloc>().add(SendPositionEvent());
+        // Ici, vous pouvez placer la logique à exécuter au clic
+        //print("Button Clicked!");
       },
-      child: const Icon(CupertinoIcons.flag_fill),
+      height: 50,
+      width: 170,
+      shape: BoxShape.rectangle,
+      //color: Color(0xFF2196F3), // Couleur du bouton
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Placer une borne',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+            Icon(Icons.pin_drop_outlined),
+          ],
+        ),
+      ),
     );
+    // return FloatingActionButton(
+    //   onPressed: () async {
+    //     await Future.sync(() async {
+    //       //Position? pos = await _getCurrentLocation();
+    //       // if (pos != null) {
+    //       //   MapUtils.mapUtilsFunctions.addPoint(pos, context: context);
+    //       // }
+    //       MapUtils.mapUtilsFunctions.addPoint(
+    //           Position(
+    //               longitude: MapUtils.bigMapPosition!.target.longitude,
+    //               latitude: MapUtils.bigMapPosition!.target.latitude,
+    //               timestamp: DateTime.now(),
+    //               accuracy: 0,
+    //               altitude: 0,
+    //               heading: 0,
+    //               speed: 0,
+    //               speedAccuracy: 0),
+    //           context: context);
+    //     });
+
+    //     //context.read<MapBloc>().add(SendPositionEvent());
+    //   },
+    //   child: const Icon(CupertinoIcons.flag_fill),
+    // );
   }
 }

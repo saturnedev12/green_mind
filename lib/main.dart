@@ -24,10 +24,10 @@ class SimpleBlocDelegate extends BlocObserver {
 Future main() async {
   Bloc.observer = SimpleBlocDelegate();
   await dotenv.load(fileName: ".env");
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.landscapeLeft,
+  //   DeviceOrientation.landscapeRight,
+  // ]);
   runApp(MyApp(fieldRepository: FieldRepository()));
 }
 

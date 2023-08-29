@@ -11,9 +11,8 @@ class MiniMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      //top: 85,
-      bottom: 5,
-      left: 6,
+      top: 70,
+      right: 6,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -22,8 +21,8 @@ class MiniMap extends StatelessWidget {
             BoxShadow(blurRadius: 10, spreadRadius: 2),
           ],
         ),
-        width: 150,
-        height: 150,
+        width: 140,
+        height: 140,
         child: BlocBuilder<MapBloc, MapState>(builder: (context, state) {
           return GoogleMap(
             onMapCreated: (GoogleMapController controller) {

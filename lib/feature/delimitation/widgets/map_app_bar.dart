@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,8 +92,8 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
           //     },
           //     icon: CircleAvatar(child: Icon(CupertinoIcons.arrow_uturn_left))),
           IconButton(
-            onPressed: () {
-              MapUtils.mapUtilsFunctions.rollBackPoint(context: context);
+            onPressed: () async {
+              await MapFunctions(context: context).rollBack();
               context.read<MapBloc>().add(SendPositionEvent());
             },
             icon: const CircleAvatar(
@@ -101,8 +103,8 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
             )),
           ),
           IconButton(
-            onPressed: () {
-              MapUtils.mapUtilsFunctions.clearPoints();
+            onPressed: () async {
+              await MapFunctions(context: context).clearPoint();
               context.read<MapBloc>().add(SendPositionEvent());
             },
             icon: const CircleAvatar(
@@ -113,9 +115,17 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           TextButton(
               onPressed: () async {
-                MapUtils.mapUtilsFunctions.displayPopupInfo(context: context);
+                //MapUtils.mapUtilsFunctions.displayPopupInfo(context: context);
                 // await MapUtils.addDistance(context: context);
                 // context.read<MapBloc>().add(SendPositionEvent());
+                inspect(MapUtils.markers);
+                log(MapUtils.markers.toString(), name: 'All markers');
+                log(MapUtils.markerToShow.toString(), name: 'Marker to show');
+                log(MapUtils.polygons.first.points.toString(),
+                    name: 'Polygone');
+                log(MapUtils.polylines.first.points.toString(),
+                    name: 'polylines');
+                log(MapUtils.path.toString(), name: 'PATHS');
               },
               child: Text('Terminer')),
           IconButton(
