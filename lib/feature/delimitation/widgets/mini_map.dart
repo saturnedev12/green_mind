@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
 import '../bloc/map_bloc.dart';
-import '../bloc/map_utils.dart';
 
 class MiniMap extends StatelessWidget {
   const MiniMap({super.key});

@@ -1,9 +1,12 @@
 import 'package:animated_button/animated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:greenmind/feature/delimitation/bloc/map_bloc.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
-import '../bloc/map_utils.dart';
 import '../handler.dart';
 
 class BotttomStake extends StatefulWidget {
@@ -40,13 +43,15 @@ class _BotttomStakeState extends State<BotttomStake> {
   @override
   Widget build(BuildContext context) {
     return AnimatedButton(
+      color: Colors.green,
       onPressed: () async {
+        await SystemSound.play(SystemSoundType.click);
         await Future.sync(() async {
           //Position? pos = await _getCurrentLocation();
           // if (pos != null) {
           //   MapUtils.mapUtilsFunctions.addPoint(pos, context: context);
           // }
-          MapFunctions(context: context).addPointHandler(
+          await MapFunctions(context: context).addPointHandler(
               position: Position(
                   longitude: MapUtils.bigMapPosition!.target.longitude,
                   latitude: MapUtils.bigMapPosition!.target.latitude,
@@ -56,6 +61,8 @@ class _BotttomStakeState extends State<BotttomStake> {
                   heading: 0,
                   speed: 0,
                   speedAccuracy: 0));
+
+          context.read<MapBloc>().add(SendPositionEvent());
         });
         // Ici, vous pouvez placer la logique à exécuter au clic
         //print("Button Clicked!");
@@ -64,7 +71,7 @@ class _BotttomStakeState extends State<BotttomStake> {
       width: 170,
       shape: BoxShape.rectangle,
       //color: Color(0xFF2196F3), // Couleur du bouton
-      child: Padding(
+      child: const Padding(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,7 +83,10 @@ class _BotttomStakeState extends State<BotttomStake> {
                 color: Colors.white,
               ),
             ),
-            Icon(Icons.pin_drop_outlined),
+            Icon(
+              Icons.ads_click_rounded,
+              color: Colors.white,
+            ),
           ],
         ),
       ),

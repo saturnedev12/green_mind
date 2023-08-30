@@ -5,13 +5,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/feature/delimitation/bloc/map_state.dart';
 import 'package:greenmind/feature/delimitation/handler.dart';
-import 'package:greenmind/feature/delimitation/widgets/bottom_browse.dart';
 import 'package:greenmind/feature/delimitation/widgets/bottom_stake.dart';
 import 'package:greenmind/feature/delimitation/widgets/map_body.dart';
-import 'package:greenmind/feature/delimitation/widgets/mini_map.dart';
 import 'package:greenmind/feature/delimitation/widgets/text_field_map.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
-import 'bloc/map_utils.dart';
 import 'widgets/map_app_bar.dart';
 
 class DelimiteMap extends StatefulWidget {
@@ -27,7 +25,7 @@ class _DelimiteMapState extends State<DelimiteMap> {
     super.initState();
     //_getCurrentLocation();
     if (MapUtils.icon == null) {
-      MapUtils.mapUtilsFunctions
+      MapDisplayFunction(context: context)
           .getBytesFromAsset('assets/map/pin.png', 50)
           .then((value) => MapUtils.icon = value);
     }
@@ -36,7 +34,7 @@ class _DelimiteMapState extends State<DelimiteMap> {
   }
 
   void onSerachAddMaker(LatLng latLng) async {
-    MapUtils.mapUtilsFunctions.clearPoints();
+    MapFunctions(context: context).clearPoint();
   }
 
   Future<void> _getCurrentLocation() async {

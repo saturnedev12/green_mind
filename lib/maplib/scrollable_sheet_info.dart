@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:greenmind/feature/delimitation/bloc/map_utils.dart';
-
-import '../../../local_packages/utm/src/utm_base.dart';
+part of maplib;
 
 class ScrollableSheetInfo extends StatelessWidget {
   ScrollableSheetInfo(
@@ -42,14 +37,14 @@ class ScrollableSheetInfo extends StatelessWidget {
               CupertinoListTile(
                 leading: Icon(Icons.square_foot_sharp),
                 title: Text('Surface:'),
-                trailing:
-                    Text(MapUtils.mapUtilsFunctions.convertSurface(surface)),
+                trailing: Text(MapDisplayFunction(context: context)
+                    .convertSurface(surface)),
               ),
               CupertinoListTile(
                 leading: Icon(Icons.square_foot_sharp),
                 title: Text('Périmètre:'),
-                trailing:
-                    Text(MapUtils.mapUtilsFunctions.convertDistance(perimetre)),
+                trailing: Text(MapDisplayFunction(context: context)
+                    .convertDistance(perimetre)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,28 +84,26 @@ class ScrollableSheetInfo extends StatelessWidget {
                 // DataColumn(label: Text('DISTANCES')),
               ],
               rows: markers
-                  .map((e) => (e.infoWindow.title != null)
-                      ? DataRow(
-                          color: MaterialStateProperty.all(Colors.grey[300]),
-                          cells: [
-                            DataCell(Text(e.infoWindow.title ?? 'KO')),
-                            DataCell(Text(UTM
-                                .fromLatLon(
-                                    lat: e.position.latitude,
-                                    lon: e.position.longitude)
-                                .easting
-                                .toStringAsFixed(3))),
-                            DataCell(Text(UTM
-                                .fromLatLon(
-                                    lat: e.position.latitude,
-                                    lon: e.position.longitude)
-                                .northing
-                                .toStringAsFixed(3))),
-                            // DataCell(Text('')),
-                            // DataCell(Text('')),
-                          ],
-                        )
-                      : DataRow(cells: []))
+                  .map<DataRow>((e) => DataRow(
+                        color: MaterialStateProperty.all(Colors.grey[300]),
+                        cells: [
+                          DataCell(Text(e.infoWindow.title ?? 'KO')),
+                          DataCell(Text(UTM
+                              .fromLatLon(
+                                  lat: e.position.latitude,
+                                  lon: e.position.longitude)
+                              .easting
+                              .toStringAsFixed(3))),
+                          DataCell(Text(UTM
+                              .fromLatLon(
+                                  lat: e.position.latitude,
+                                  lon: e.position.longitude)
+                              .northing
+                              .toStringAsFixed(3))),
+                          // DataCell(Text('')),
+                          // DataCell(Text('')),
+                        ],
+                      ))
                   .toList(),
             ),
           ],

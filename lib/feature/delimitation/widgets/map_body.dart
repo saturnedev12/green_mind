@@ -7,10 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/feature/delimitation/bloc/map_utils_functions.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
 import '../bloc/map_bloc.dart';
 import '../bloc/map_state.dart';
-import '../bloc/map_utils.dart';
 
 class MapBody extends StatelessWidget {
   MapBody({super.key});
@@ -27,11 +27,11 @@ class MapBody extends StatelessWidget {
                 MapUtils.mapController = controller;
               },
               onCameraMove: (CameraPosition position) async {
-                MapUtils.mapUtilsFunctions
+                MapDisplayFunction(context: context)
                     .updateSecondMapPosition(position.target);
                 MapUtils.bigMapPosition = position;
-                scale = await MapUtils.mapUtilsFunctions.calculateScale(
-                    mapController: MapUtils.mapController!, context: context);
+                // scale = await MapUtils.mapUtilsFunctions.calculateScale(
+                //     mapController: MapUtils.mapController!, context: context);
                 // if (MapUtils.mapController != null) {
                 //   MapUtils.mapController!
                 //       .moveCamera(CameraUpdate.newCameraPosition(position));

@@ -1,33 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
-library maplib;
-
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:greenmind/feature/delimitation/bloc/map_utils_functions.dart';
-import 'map_state.dart';
-import 'dart:async';
-import 'dart:developer';
-import 'dart:math' as math;
-import 'dart:ui' as ui;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:greenmind/feature/delimitation/widgets/scrollable_sheet_info.dart';
-import 'package:maps_toolkit/maps_toolkit.dart' as mp;
-import 'map_bloc.dart';
-import 'map_state.dart';
-import 'map_utils.dart';
-
-part 'map_function.dart';
-part 'map_distances_setter.dart';
+part of maplib;
 
 // More parts
 
@@ -77,7 +49,6 @@ class MapUtils {
   static double zoomMiniMap = 15;
 
   /// All fuctions of map
-  static MapUtilsFunctions mapUtilsFunctions = MapUtilsFunctions();
 
   MapUtils._internal() {}
 

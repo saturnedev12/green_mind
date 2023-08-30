@@ -4,10 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
 import '../bloc/map_bloc.dart';
 import '../bloc/map_state.dart';
-import '../bloc/map_utils.dart';
 
 class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
   MapAppBar({super.key});
@@ -115,17 +115,17 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           TextButton(
               onPressed: () async {
-                //MapUtils.mapUtilsFunctions.displayPopupInfo(context: context);
-                // await MapUtils.addDistance(context: context);
                 // context.read<MapBloc>().add(SendPositionEvent());
-                inspect(MapUtils.markers);
-                log(MapUtils.markers.toString(), name: 'All markers');
-                log(MapUtils.markerToShow.toString(), name: 'Marker to show');
-                log(MapUtils.polygons.first.points.toString(),
-                    name: 'Polygone');
-                log(MapUtils.polylines.first.points.toString(),
-                    name: 'polylines');
-                log(MapUtils.path.toString(), name: 'PATHS');
+                // inspect(MapUtils.markers);
+                // log(MapUtils.markers.toString(), name: 'All markers');
+                // log(MapUtils.markerToShow.toString(), name: 'Marker to show');
+                // log(MapUtils.polygons.first.points.toString(),
+                //     name: 'Polygone');
+                // log(MapUtils.polylines.first.points.toString(),
+                //     name: 'polylines');
+                // log(MapUtils.path.toString(), name: 'PATHS');
+                MapDisplayFunction(context: context)
+                    .displayPopupInfo(context: context);
               },
               child: Text('Terminer')),
           IconButton(

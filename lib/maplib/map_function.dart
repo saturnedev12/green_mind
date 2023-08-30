@@ -31,7 +31,7 @@ class MapFunctions {
             markerId: MarkerId(key.toString()),
             position: value,
             icon: BitmapDescriptor.fromBytes(MapUtils.icon!),
-            infoWindow: InfoWindow(title: 'B${MapUtils.borneMarkerCounter}'),
+            infoWindow: InfoWindow(title: 'B${key + 1}'),
           ),
         );
       });

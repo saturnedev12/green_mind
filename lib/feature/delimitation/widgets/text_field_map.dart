@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:greenmind/maplib/maplib.dart';
 
 import '../bloc/map_state.dart';
-import '../bloc/map_utils.dart';
 
 class TextFieldMap extends StatelessWidget {
   TextFieldMap({super.key, required this.textEditingController});
@@ -68,7 +68,7 @@ class TextFieldMap extends StatelessWidget {
                         textEditingController.selection =
                             TextSelection.fromPosition(TextPosition(
                                 offset: prediction.description!.length));
-                        MapUtils.mapUtilsFunctions.clearPoints();
+                        MapFunctions(context: context).clearPoint();
                         textEditingController.clear();
                       }),
                 )
