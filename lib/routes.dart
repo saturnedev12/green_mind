@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/data/models/weather_data_agregation_model.dart';
 import 'package:greenmind/feature/delimitation/map_sample.dart';
 import 'package:greenmind/feature/home/home.dart';
 import 'package:greenmind/feature/login_page/login_page.dart';
+import 'package:greenmind/feature/polygonal_page.dart/polygonal_page.dart';
 import 'package:greenmind/tests/weather_detail_page.dart';
 
 import 'feature/map/map.dart';
@@ -23,6 +25,15 @@ class AppRouter extends GoRouter {
                   path: 'map',
                   builder: (BuildContext context, GoRouterState state) {
                     return MapScreen();
+                  },
+                ),
+
+                GoRoute(
+                  path: 'polygonal',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return PolygonalPage(
+                      paths: state.extra as List<LatLng>,
+                    );
                   },
                 ),
                 GoRoute(

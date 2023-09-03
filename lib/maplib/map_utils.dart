@@ -29,8 +29,8 @@ class MapUtils {
       ValueNotifier<MODEDELIMITE>(MODEDELIMITE.map);
   static final MapUtils _instance = MapUtils._internal();
   static Position? currentPosition = Position(
-      latitude: 5.5058936,
-      longitude: -4.0632231,
+      latitude: 5.281532,
+      longitude: -4.143163,
       timestamp: DateTime.now(),
       accuracy: 0.0,
       altitude: 0.0,

@@ -29,11 +29,10 @@ class MapDistancesSetter {
             0.5,
           );
           // creer l'image a partir du text de la distance
-          ui.Image textImage =
-              await _createTextImage(convertDistance(distance));
+          ui.Image textImage = await createTextImage(convertDistance(distance));
 
           BitmapDescriptor customMarkerIcon = BitmapDescriptor.fromBytes(
-            await _imageToByteData(textImage),
+            await imageToByteData(textImage),
           );
 
           final Marker dMarker = Marker(
@@ -55,7 +54,7 @@ class MapDistancesSetter {
   }
 
   /// creer une image a partir d'un texte
-  static Future<ui.Image> _createTextImage(String text) async {
+  static Future<ui.Image> createTextImage(String text) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
@@ -108,7 +107,7 @@ class MapDistancesSetter {
   }
 
   /// convertir image en bite pour la map
-  static Future<Uint8List> _imageToByteData(ui.Image image) async {
+  static Future<Uint8List> imageToByteData(ui.Image image) async {
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData!.buffer.asUint8List();
   }

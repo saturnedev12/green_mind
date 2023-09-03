@@ -25,8 +25,7 @@ class _DelimiteMapState extends State<DelimiteMap> {
     super.initState();
     //_getCurrentLocation();
     if (MapUtils.icon == null) {
-      MapDisplayFunction(context: context)
-          .getBytesFromAsset('assets/map/pin.png', 50)
+      MapDisplayFunction.getBytesFromAsset('assets/map/pin.png', 50)
           .then((value) => MapUtils.icon = value);
     }
 

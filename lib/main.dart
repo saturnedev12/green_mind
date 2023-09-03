@@ -6,6 +6,7 @@ import 'package:greenmind/data/bloc/weather_cubit.dart';
 import 'package:greenmind/data/repository/field/field_repository.dart';
 import 'package:greenmind/data/repository/weather/weather_repository.dart';
 import 'package:greenmind/feature/home/bloc/home_navigation_cubit.dart';
+import 'package:greenmind/maplib/maplib.dart';
 import 'package:greenmind/routes.dart';
 
 import 'configs/theme_configs.dart';
@@ -28,6 +29,10 @@ Future main() async {
   //   DeviceOrientation.landscapeLeft,
   //   DeviceOrientation.landscapeRight,
   // ]);
+  if (MapUtils.icon == null) {
+    await MapDisplayFunction.getBytesFromAsset('assets/map/pin.png', 50)
+        .then((value) => MapUtils.icon = value);
+  }
   runApp(MyApp(fieldRepository: FieldRepository()));
 }
 

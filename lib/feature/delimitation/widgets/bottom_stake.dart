@@ -68,7 +68,7 @@ class _BotttomStakeState extends State<BotttomStake> {
         //print("Button Clicked!");
       },
       height: 50,
-      width: 170,
+      width: 180,
       shape: BoxShape.rectangle,
       //color: Color(0xFF2196F3), // Couleur du bouton
       child: const Padding(

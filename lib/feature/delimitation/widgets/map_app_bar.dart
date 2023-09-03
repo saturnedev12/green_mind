@@ -123,7 +123,7 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
                 //     name: 'Polygone');
                 // log(MapUtils.polylines.first.points.toString(),
                 //     name: 'polylines');
-                // log(MapUtils.path.toString(), name: 'PATHS');
+                log(MapUtils.path.toString(), name: 'PATHS');
                 MapDisplayFunction(context: context)
                     .displayPopupInfo(context: context);
               },

@@ -50,7 +50,11 @@ class ScrollableSheetInfo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      List<LatLng> _path = List.from(MapUtils.path);
+                      _path.add(_path.first);
+                      context.go('/polygonal', extra: _path);
+                    },
                     icon: Icon(Icons.polyline_outlined),
                     label: const Text('Polygonale'),
                   ),
