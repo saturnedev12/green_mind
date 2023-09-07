@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/local_packages/utm/src/utm_base.dart';
@@ -9,6 +10,8 @@ import 'package:greenmind/maplib/maplib.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 import 'dart:ui' as ui;
 import 'dart:math' as math;
+
+import 'package:test/test.dart';
 
 class PolygonalPage extends StatefulWidget {
   const PolygonalPage({super.key, required this.paths});
@@ -20,10 +23,22 @@ class PolygonalPage extends StatefulWidget {
 
 class _PolygonalPageState extends State<PolygonalPage> {
   late GoogleMapController mapController;
+  GlobalKey containerKey = GlobalKey();
 
   final LatLng _center = const LatLng(5.281532, -4.143163);
   static Set<Marker> _markers = {};
   Set<Marker> _markerMap = {};
+
+  Future<BitmapDescriptor> _genereateCustomMarkertext(
+      {required String text}) async {
+    ui.Image textImage = await MapDistancesSetter.createTextImage(text,
+        color: Colors.green, textColor: Colors.white);
+    BitmapDescriptor customMarkerIcon = BitmapDescriptor.fromBytes(
+        await MapDistancesSetter.imageToByteData(textImage));
+
+    return customMarkerIcon;
+  }
+
   // List<LatLng> paths = [
   //   LatLng(5.2800899816145135, -4.1450368613004684),
   //   LatLng(5.280310992566902, -4.141850396990776),
@@ -36,25 +51,29 @@ class _PolygonalPageState extends State<PolygonalPage> {
   List<String> distances = [];
 
   /// ajouter des markers
-  _addMarkers() async {
-    await Future.sync(() {
-      widget.paths.asMap().forEach((key, value) {
+  Future<void> _addMarkers() async {
+    await Future.sync(() async {
+      widget.paths.asMap().forEach((key, value) async {
+        BitmapDescriptor customMarker = await _genereateCustomMarkertext(
+            text: (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1');
         _markers.add(
           Marker(
             markerId: MarkerId(key.toString()),
             position: value,
-            icon: BitmapDescriptor.fromBytes(MapUtils.icon!),
+            icon: customMarker,
             infoWindow: InfoWindow(
                 title:
                     (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1'),
           ),
         );
         if (key != (widget.paths.length - 1)) {
+          BitmapDescriptor customMarker = await _genereateCustomMarkertext(
+              text: (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1');
           _markerMap.add(
             Marker(
               markerId: MarkerId(key.toString()),
               position: value,
-              //icon: BitmapDescriptor.fromBytes(MapUtils.icon!),
+              icon: customMarker,
               infoWindow: InfoWindow(title: 'B${key + 1}'),
             ),
           );
@@ -166,6 +185,29 @@ class _PolygonalPageState extends State<PolygonalPage> {
     return mp.SphericalUtil.computeArea(newPath).toDouble();
   }
 
+  /// capturer le container en IMAGE
+  Future<Uint8List> captureContainer() async {
+    try {
+      // Find the RenderRepaintBoundary for the given GlobalKey
+      RenderRepaintBoundary boundary = containerKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+
+      // Capture the image
+      ui.Image image = await boundary.toImage(
+          pixelRatio: 3.0); // Adjust pixelRatio as needed
+
+      // Convert the image to bytes
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List uint8List = byteData!.buffer.asUint8List();
+
+      return uint8List;
+    } catch (e) {
+      print('Error capturing container: $e');
+      return Uint8List(0);
+    }
+  }
+
   @override
   void initState() {
     log(getSurface().toString(), name: 'surface');
@@ -183,62 +225,42 @@ class _PolygonalPageState extends State<PolygonalPage> {
               () {},
             ));
 
-    // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
+      body: RepaintBoundary(
+        key: containerKey,
         child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SizedBox(
-            width: 1000,
-            height: 500,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Flexible(
-                  flex: 3,
-                  child: Stack(children: [
-                    GoogleMap(
-                      zoomGesturesEnabled: true,
-                      rotateGesturesEnabled: false,
-                      scrollGesturesEnabled: false,
-                      tiltGesturesEnabled: false,
-                      zoomControlsEnabled: true,
-                      myLocationButtonEnabled: false,
-                      mapType: MapType.hybrid,
-                      onMapCreated: (controller) {
-                        mapController = controller;
-                      },
-                      initialCameraPosition: CameraPosition(
-                        target: _polygonCenter(),
-                        zoom: 17, //getSurface() * 0.000193,markers: _markerMap,
-                      ),
-                      polygons: {
-                        Polygon(
-                          geodesic: true,
-                          polygonId: PolygonId('myPolygon'),
-                          points: widget.paths,
-                          fillColor: Colors.blue.withOpacity(0.5),
-                          strokeColor: Colors.blue,
-                          strokeWidth: 2,
-                        ),
-                      },
-                    ),
-                    Positioned(
-                        child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: GoogleMap(
-                        zoomGesturesEnabled: false,
+          scrollDirection: Axis.horizontal,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SizedBox(
+              width: 1000,
+              height: 500,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: Stack(children: [
+                      GoogleMap(
+                        zoomGesturesEnabled: true,
                         rotateGesturesEnabled: false,
                         scrollGesturesEnabled: false,
                         tiltGesturesEnabled: false,
+                        zoomControlsEnabled: true,
                         myLocationButtonEnabled: false,
                         mapType: MapType.hybrid,
                         onMapCreated: (controller) {
@@ -246,8 +268,10 @@ class _PolygonalPageState extends State<PolygonalPage> {
                         },
                         initialCameraPosition: CameraPosition(
                           target: _polygonCenter(),
-                          zoom: 13, //getSurface() * 0.000158,
+                          zoom:
+                              19, //getSurface() * 0.000193,markers: _markerMap,
                         ),
+                        markers: _markerMap,
                         polygons: {
                           Polygon(
                             geodesic: true,
@@ -259,77 +283,114 @@ class _PolygonalPageState extends State<PolygonalPage> {
                           ),
                         },
                       ),
-                    ))
-                  ]),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: DataTable(
-                    headingRowHeight: 50,
-                    headingRowColor:
-                        MaterialStatePropertyAll<Color>(CupertinoColors.white),
-                    columns: [
-                      DataColumn(label: Text('Bornes')),
-                      DataColumn(
-                        label: Text('X'),
-                      ),
-                      DataColumn(label: Text('Y')),
-                      // DataColumn(label: Text('ANOLES')),
-                      // DataColumn(label: Text('DISTANCES')),
-                    ],
-                    rows: _markers
-                        .map<DataRow>((e) => DataRow(
-                              color:
-                                  MaterialStateProperty.all(Colors.grey[300]),
-                              cells: [
-                                DataCell(Text(e.infoWindow.title ?? 'KO')),
-                                DataCell(Text(UTM
-                                    .fromLatLon(
-                                        lat: e.position.latitude,
-                                        lon: e.position.longitude)
-                                    .easting
-                                    .toStringAsFixed(3))),
-                                DataCell(Text(UTM
-                                    .fromLatLon(
-                                        lat: e.position.latitude,
-                                        lon: e.position.longitude)
-                                    .northing
-                                    .toStringAsFixed(3))),
-                                // DataCell(Text('')),
-                                // DataCell(Text('')),
-                              ],
-                            ))
-                        .toList(),
-                  ),
-                ),
-                Container(
-                    width: 100,
-                    //color: Colors.red,
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.white,
-                          height: 51,
-                          child: Center(child: Text('DISTANCES')),
-                        ),
-                        for (int i = 0; i < distances.length; i++)
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border(
-                                  bottom: BorderSide(
-                                color: Colors.white,
-                              )),
-                            ),
-                            height: (i == 0) ? 70.9 : 50,
-                            child: Center(child: Text(distances[i])),
+                      Positioned(
+                          child: Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(border: Border.all()),
+                        child: GoogleMap(
+                          zoomGesturesEnabled: false,
+                          rotateGesturesEnabled: false,
+                          scrollGesturesEnabled: false,
+                          tiltGesturesEnabled: false,
+                          myLocationButtonEnabled: false,
+                          mapType: MapType.hybrid,
+                          onMapCreated: (controller) {
+                            mapController = controller;
+                          },
+                          initialCameraPosition: CameraPosition(
+                            target: _polygonCenter(),
+                            zoom: 13, //getSurface() * 0.000158,
                           ),
+                          polygons: {
+                            Polygon(
+                              geodesic: true,
+                              polygonId: PolygonId('myPolygon'),
+                              points: widget.paths,
+                              fillColor: Colors.blue.withOpacity(0.5),
+                              strokeColor: Colors.blue,
+                              strokeWidth: 2,
+                            ),
+                          },
+                        ),
+                      ))
+                    ]),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: DataTable(
+                      headingRowHeight: 50,
+                      headingRowColor: MaterialStatePropertyAll<Color>(
+                          CupertinoColors.white),
+                      columns: [
+                        DataColumn(label: Text('Bornes')),
+                        DataColumn(
+                          label: Text('X'),
+                        ),
+                        DataColumn(label: Text('Y')),
+                        // DataColumn(label: Text('ANOLES')),
+                        // DataColumn(label: Text('DISTANCES')),
                       ],
-                    ))
-              ],
+                      rows: _markers
+                          .map<DataRow>((e) => DataRow(
+                                color:
+                                    MaterialStateProperty.all(Colors.grey[300]),
+                                cells: [
+                                  DataCell(Text(e.infoWindow.title ?? 'KO')),
+                                  DataCell(Text(UTM
+                                      .fromLatLon(
+                                          lat: e.position.latitude,
+                                          lon: e.position.longitude)
+                                      .easting
+                                      .toStringAsFixed(3))),
+                                  DataCell(Text(UTM
+                                      .fromLatLon(
+                                          lat: e.position.latitude,
+                                          lon: e.position.longitude)
+                                      .northing
+                                      .toStringAsFixed(3))),
+                                  // DataCell(Text('')),
+                                  // DataCell(Text('')),
+                                ],
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  Container(
+                      width: 100,
+                      //color: Colors.red,
+                      child: Column(
+                        children: [
+                          Container(
+                            color: Colors.white,
+                            height: 51,
+                            child: Center(child: Text('DISTANCES')),
+                          ),
+                          for (int i = 0; i < distances.length; i++)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                border: Border(
+                                    bottom: BorderSide(
+                                  color: Colors.white,
+                                )),
+                              ),
+                              height: (i == 0) ? 70.9 : 50,
+                              child: Center(child: Text(distances[i])),
+                            ),
+                        ],
+                      ))
+                ],
+              ),
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {});
+        },
+        child: Icon(Icons.replay_outlined),
       ),
     );
   }

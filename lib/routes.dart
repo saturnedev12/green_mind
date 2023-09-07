@@ -7,6 +7,7 @@ import 'package:greenmind/feature/delimitation/map_sample.dart';
 import 'package:greenmind/feature/home/home.dart';
 import 'package:greenmind/feature/login_page/login_page.dart';
 import 'package:greenmind/feature/polygonal_page.dart/polygonal_page.dart';
+import 'package:greenmind/tests/test_page.dart';
 import 'package:greenmind/tests/weather_detail_page.dart';
 
 import 'feature/map/map.dart';
@@ -18,7 +19,7 @@ class AppRouter extends GoRouter {
             GoRoute(
               path: '/',
               builder: (BuildContext context, GoRouterState state) {
-                return Home();
+                return ScannerPage();
               },
               routes: <RouteBase>[
                 GoRoute(

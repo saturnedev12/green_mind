@@ -57,6 +57,9 @@ dependencies:
   flutter_svg: ^2.0.7
   syncfusion_flutter_charts: ^22.2.7
   animated_button: ^0.2.0
+  image_picker: ^1.0.4
+  path_provider: ^2.1.1
+  pdf: ^3.10.4
 dev_dependencies:
   pedantic: ^1.11.0
   flutter_test:

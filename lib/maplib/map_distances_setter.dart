@@ -54,12 +54,13 @@ class MapDistancesSetter {
   }
 
   /// creer une image a partir d'un texte
-  static Future<ui.Image> createTextImage(String text) async {
+  static Future<ui.Image> createTextImage(String text,
+      {Color? color, Color? textColor}) async {
     final ui.PictureRecorder pictureRecorder = ui.PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
 
     final textStyle = ui.TextStyle(
-      color: Colors.black,
+      color: textColor ?? Colors.black,
       fontWeight: FontWeight.bold,
       fontSize: 20.0,
     );
@@ -89,7 +90,7 @@ class MapDistancesSetter {
       ..lineTo(0, 12)
       ..quadraticBezierTo(0, 0, 12, 0)
       ..close();
-    canvas.drawPath(path, Paint()..color = Colors.white);
+    canvas.drawPath(path, Paint()..color = color ?? Colors.white);
 
     canvas.drawParagraph(paragraph, Offset(0.0, 5.0));
 
