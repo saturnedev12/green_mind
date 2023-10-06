@@ -30,8 +30,12 @@ class WeatherSmallBox extends StatelessWidget {
           ],
           gradient: LinearGradient(
             colors: [
-              HexColor.fromHex("#523D7F"),
-              HexColor.fromHex("#957DCD"),
+              // Colors.grey.shade200,
+              Colors.blueAccent.shade100,
+              Colors.blueAccent.shade200,
+
+              // HexColor.fromHex("#523D7F"),
+              // HexColor.fromHex("#957DCD"),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
