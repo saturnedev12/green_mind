@@ -3,6 +3,7 @@ import 'package:greenmind/Utils.dart';
 import 'package:greenmind/feature/analyse/field/field_component.dart';
 import 'package:greenmind/feature/create_ground/create_ground_page.dart';
 import 'package:greenmind/feature/delimitation/map_sample.dart';
+import 'package:greenmind/feature/fields_page.dart/fields_page.dart';
 
 import '../feature/vegetation_analyse/vegetation_analyse_page.dart';
 
@@ -43,6 +44,7 @@ class ConstantsApp {
   static Map<PageIndex, Widget> listPages = {
     PageIndex.HOME: DelimiteMap(),
     PageIndex.ANALYSE: VegetationAnalysePage(),
+    PageIndex.FIELDS: FieldPage(),
   };
 }
 

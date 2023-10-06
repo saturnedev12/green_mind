@@ -54,4 +54,5 @@ enum PageIndex {
   HOME,
   ANALYSE,
   SETTINGS,
+  FIELDS,
 }

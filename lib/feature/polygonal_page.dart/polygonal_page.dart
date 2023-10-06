@@ -24,7 +24,7 @@ class PolygonalPage extends StatefulWidget {
 class _PolygonalPageState extends State<PolygonalPage> {
   late GoogleMapController mapController;
   GlobalKey containerKey = GlobalKey();
-
+  double mapZoom = 19;
   final LatLng _center = const LatLng(5.281532, -4.143163);
   static Set<Marker> _markers = {};
   Set<Marker> _markerMap = {};
@@ -247,8 +247,8 @@ class _PolygonalPageState extends State<PolygonalPage> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SizedBox(
-              width: 1000,
-              height: 500,
+              width: 1500,
+              height: 1000,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -257,8 +257,8 @@ class _PolygonalPageState extends State<PolygonalPage> {
                     child: Stack(children: [
                       GoogleMap(
                         zoomGesturesEnabled: true,
-                        rotateGesturesEnabled: false,
-                        scrollGesturesEnabled: false,
+                        rotateGesturesEnabled: true,
+                        scrollGesturesEnabled: true,
                         tiltGesturesEnabled: false,
                         zoomControlsEnabled: true,
                         myLocationButtonEnabled: false,
@@ -269,7 +269,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                         initialCameraPosition: CameraPosition(
                           target: _polygonCenter(),
                           zoom:
-                              19, //getSurface() * 0.000193,markers: _markerMap,
+                              mapZoom, //getSurface() * 0.000193,markers: _markerMap,
                         ),
                         markers: _markerMap,
                         polygons: {
@@ -386,11 +386,38 @@ class _PolygonalPageState extends State<PolygonalPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {});
-        },
-        child: Icon(Icons.replay_outlined),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  mapZoom += 0.5;
+                });
+              },
+              child: Icon(Icons.add),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  mapZoom -= 0.5;
+                });
+              },
+              child: Icon(Icons.minimize),
+            ),
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              setState(() {});
+            },
+            child: Icon(Icons.download),
+          ),
+        ],
       ),
     );
   }

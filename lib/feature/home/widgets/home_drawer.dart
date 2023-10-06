@@ -18,8 +18,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeNavigationCubit, PageState>(
       builder: (context, state) => Container(
-        width: MediaQuery.of(context).size.width * 0.7,
-        color: Colors.white,
+        width: 200, //MediaQuery.of(context).size.width * 0.7,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: ListView(
           children: <Widget>[
             Padding(
@@ -39,6 +42,14 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   .onNavigate(pageIndex: PageIndex.HOME),
               icon: CupertinoIcons.home,
               title: 'Home',
+            ),
+            HomeListTile(
+              isSelected: state.pageIndex == PageIndex.FIELDS,
+              onTap: () => context
+                  .read<HomeNavigationCubit>()
+                  .onNavigate(pageIndex: PageIndex.FIELDS),
+              icon: CupertinoIcons.map,
+              title: 'Champs',
             ),
             HomeListTile(
               isSelected: state.pageIndex == PageIndex.ANALYSE,

@@ -22,10 +22,11 @@ class WeatherSmallBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              blurRadius: 8,
-              spreadRadius: 2,
-              color: Colors.grey[500]!,
-            ),
+              color: Colors.grey.shade400,
+              offset: Offset.zero,
+              blurRadius: 10,
+              spreadRadius: 0.5,
+            )
           ],
           gradient: LinearGradient(
             colors: [

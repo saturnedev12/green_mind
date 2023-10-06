@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeListTile extends StatefulWidget {
@@ -31,9 +32,10 @@ class _HomeListTileState extends State<HomeListTile> {
               : Colors.white,
         ),
       )),
-      child: ListTile(
-        selected: widget.isSelected,
-        focusNode: focusNode,
+      child: CupertinoListTile(
+        backgroundColor: widget.isSelected
+            ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+            : Colors.white,
         leading: Icon(
           widget.icon,
           color: widget.isSelected
@@ -44,11 +46,7 @@ class _HomeListTileState extends State<HomeListTile> {
           widget.title,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        tileColor: Colors.white,
-        focusColor: Colors.yellow,
-        selectedColor: Colors.black,
-        selectedTileColor:
-            Theme.of(context).colorScheme.primary.withOpacity(0.1),
+
         //isThreeLine: true,
 
         onTap: widget.onTap,

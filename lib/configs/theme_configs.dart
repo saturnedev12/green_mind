@@ -49,14 +49,14 @@ class ThemeConfig {
             )),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: HexColor.fromHex('#00BFA6'),
+            backgroundColor: HexColor.fromHex('#6f9d51'),
           ),
         ),
         checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.all(HexColor.fromHex('#00BFA6')),
+          fillColor: MaterialStateProperty.all(HexColor.fromHex('#6f9d51')),
         ),
         colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: HexColor.fromHex('#00BFA6'),
+              primary: HexColor.fromHex('#6f9d51'),
               background: CupertinoColors.activeGreen,
             ),
       );
@@ -107,18 +107,18 @@ class ThemeConfig {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: HexColor.fromHex('#00BFA6'),
+            backgroundColor: HexColor.fromHex('#6f9d51'),
             //textStyle: Tex
           ),
         ),
         checkboxTheme: CheckboxThemeData(
-          fillColor: MaterialStateProperty.all(HexColor.fromHex('#00BFA6')),
+          fillColor: MaterialStateProperty.all(HexColor.fromHex('#6f9d51')),
         ),
         //primarySwatch: Colors.green,
         colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: HexColor.fromHex('#00BFA6'),
+              primary: HexColor.fromHex('#6f9d51'),
               background: CupertinoColors.activeGreen,
-              //onPrimary: HexColor.fromHex('#00BFA6')FEA853,
+              //onPrimary: HexColor.fromHex('#6f9d51')FEA853,
               //: Colors.blue,
             ),
       );
