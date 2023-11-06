@@ -22,6 +22,16 @@ class MapFunctions {
   MapFunctions({required this.context});
   BuildContext context;
 
+  /// transformaer une liste de point latlng gogolaMap er latlng2 FlutterMap
+  static List<opens.LatLng> convertToLatLng2(List<LatLng> originalList) {
+    List<opens.LatLng> resultList = [];
+    for (LatLng latLng in originalList) {
+      final newLatLng = opens.LatLng(latLng.latitude, latLng.longitude);
+      resultList.add(newLatLng);
+    }
+    return resultList;
+  }
+
   /// ajouter des markers
   _addMarkers() async {
     await Future.sync(() {

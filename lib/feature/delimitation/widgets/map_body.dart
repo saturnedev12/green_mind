@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:animated_icon/animated_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,23 +38,23 @@ class MapBody extends StatelessWidget {
                 //       .moveCamera(CameraUpdate.newCameraPosition(position));
                 // }
               },
-              onTap: (MapUtils.mapNotifier.value == MODEDELIMITE.map)
-                  ? (point) {
-                      //
-                      MapFunctions(context: context).addPointHandler(
-                        position: Position(
-                            longitude: point.longitude,
-                            latitude: point.latitude,
-                            timestamp: DateTime.now(),
-                            accuracy: 0,
-                            altitude: 0,
-                            heading: 0,
-                            speed: 0,
-                            speedAccuracy: 0),
-                      );
-                      context.read<MapBloc>().add(SendPositionEvent());
-                    }
-                  : null,
+              // onTap: (MapUtils.mapNotifier.value == MODEDELIMITE.map)
+              //     ? (point) {
+              //         //
+              //         MapFunctions(context: context).addPointHandler(
+              //           position: Position(
+              //               longitude: point.longitude,
+              //               latitude: point.latitude,
+              //               timestamp: DateTime.now(),
+              //               accuracy: 0,
+              //               altitude: 0,
+              //               heading: 0,
+              //               speed: 0,
+              //               speedAccuracy: 0),
+              //         );
+              //         context.read<MapBloc>().add(SendPositionEvent());
+              //       }
+              //     : null,
 
               polygons: MapUtils.polygons,
 
@@ -79,12 +80,22 @@ class MapBody extends StatelessWidget {
               //   });
               // },
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 35),
-                child: SvgPicture.asset(
-                  'assets/svgs/pin.svg',
-                  width: 30,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 25),
+              child: Center(
+                child: AnimateIcon(
+                  key: UniqueKey(),
+                  onTap: () {},
+                  iconType: IconType.continueAnimation,
+                  height: 90,
+                  width: 90,
+                  color: Colors.green,
+                  // color: Color.fromRGBO(
+                  //     Random.secure().nextInt(255),
+                  //     Random.secure().nextInt(255),
+                  //     Random.secure().nextInt(255),
+                  //     1),
+                  animateIcon: AnimateIcons.mapPointer,
                 ),
               ),
             ),

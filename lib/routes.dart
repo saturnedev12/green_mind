@@ -21,7 +21,7 @@ class AppRouter extends GoRouter {
             GoRoute(
               path: '/',
               builder: (BuildContext context, GoRouterState state) {
-                return VegetationAnalysePage();
+                return Home();
               },
               routes: <RouteBase>[
                 GoRoute(

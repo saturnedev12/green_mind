@@ -64,6 +64,7 @@ dependencies:
   url_launcher: ^6.1.14
   percent_indicator: ^4.2.3
   table_calendar: ^3.0.9
+  animated_icon: ^0.0.5
 dev_dependencies:
   pedantic: ^1.11.0
   flutter_test:

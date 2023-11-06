@@ -24,7 +24,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/local_packages/utm/src/utm_base.dart';
 import 'package:maps_toolkit/maps_toolkit.dart' as mp;
-
+import 'package:latlong2/latlong.dart' as opens;
 part 'map_utils.dart';
 part 'map_function.dart';
 part 'map_distances_setter.dart';
