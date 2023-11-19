@@ -8,10 +8,10 @@ import 'package:greenmind/data/repository/weather/weather_repository.dart';
 import 'package:greenmind/feature/home/bloc/home_navigation_cubit.dart';
 import 'package:greenmind/maplib/maplib.dart';
 import 'package:greenmind/routes.dart';
-
 import 'configs/theme_configs.dart';
 import 'data/bloc/create_field_bloc.dart';
 import 'feature/delimitation/bloc/map_bloc.dart';
+
 
 class SimpleBlocDelegate extends BlocObserver {
   @override

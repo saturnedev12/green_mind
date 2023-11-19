@@ -7,6 +7,7 @@ import 'package:greenmind/feature/analyse/field/field_component.dart';
 import 'package:greenmind/feature/delimitation/map_sample.dart';
 import 'package:greenmind/feature/home/home.dart';
 import 'package:greenmind/feature/login_page/login_page.dart';
+import 'package:greenmind/feature/map/simple_map.dart';
 import 'package:greenmind/feature/polygonal_page.dart/polygonal_page.dart';
 import 'package:greenmind/feature/vegetation_analyse/vegetation_analyse_page.dart';
 import 'package:greenmind/tests/test_page.dart';

@@ -400,61 +400,63 @@ class _PolygonalPageState extends State<PolygonalPage> {
                         ],
                       ),
                     ),
-                    Positioned(
-                      bottom: 5,
-                      child: ClipRect(
-                        // <-- clips to the 200x200 [Container] below
-                        child: BackdropFilter(
-                          filter: ui.ImageFilter.blur(
-                            sigmaX: 5.0,
-                            sigmaY: 5.0,
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 1500,
-                            height: 1000,
+                    Center(
+                      child: Positioned(
+                        bottom: 5,
+                        child: ClipRect(
+                          // <-- clips to the 200x200 [Container] below
+                          child: BackdropFilter(
+                            filter: ui.ImageFilter.blur(
+                              sigmaX: 5.0,
+                              sigmaY: 5.0,
+                            ),
                             child: Container(
-                              width: 330,
-                              height: 320,
-                              padding: EdgeInsets.all(5).copyWith(top: 10),
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 5,
-                                      spreadRadius: 1,
-                                      color: Colors.grey,
-                                    )
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(
-                                    Icons.lock_clock,
-                                    size: 40,
-                                    color: CupertinoColors.systemGrey,
-                                  ),
-                                  Text(
-                                    'Veuillez régler la facture pour pouvoir voir entièrement la delimitation de ce champ avec les bornes, des distances entre les bornes, le tableau et enregistrer le document.',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    '3000 FCFA',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      log("HELLO");
-                                    },
-                                    child: Text(
-                                      'Payer maintenant',
-                                      style: TextStyle(color: Colors.white),
+                              alignment: Alignment.center,
+                              width: 1500,
+                              height: 1000,
+                              child: Container(
+                                width: 330,
+                                height: 320,
+                                padding: EdgeInsets.all(5).copyWith(top: 10),
+                                decoration: BoxDecoration(
+                                    color: CupertinoColors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 5,
+                                        spreadRadius: 1,
+                                        color: Colors.grey,
+                                      )
+                                    ]),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.lock_clock,
+                                      size: 40,
+                                      color: CupertinoColors.systemGrey,
                                     ),
-                                  ),
-                                ],
+                                    Text(
+                                      'Veuillez régler la facture pour pouvoir voir entièrement la delimitation de ce champ avec les bornes, des distances entre les bornes, le tableau et enregistrer le document.',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      '3000 FCFA',
+                                      style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        log("HELLO");
+                                      },
+                                      child: Text(
+                                        'Payer maintenant',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
