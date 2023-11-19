@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +8,10 @@ import 'package:greenmind/cubit/login_cubit.dart';
 import 'package:greenmind/data/bloc/weather_cubit.dart';
 import 'package:greenmind/data/repository/field/field_repository.dart';
 import 'package:greenmind/data/repository/weather/weather_repository.dart';
-import 'package:greenmind/data/services/LocationService.dart';
+import 'package:greenmind/services/locationService.dart';
 import 'package:greenmind/feature/delimitation/handler.dart';
 import 'package:greenmind/feature/home/bloc/home_navigation_cubit.dart';
+import 'package:greenmind/firebase_options.dart';
 import 'package:greenmind/maplib/maplib.dart';
 import 'package:greenmind/routes.dart';
 
@@ -44,6 +46,9 @@ Future<void> _getCurrentLocation() async {
 }
 
 Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      name: 'GreenMind', options: DefaultFirebaseOptions.currentPlatform);
   Bloc.observer = SimpleBlocDelegate();
   await dotenv.load(fileName: ".env");
   // SystemChrome.setPreferredOrientations([

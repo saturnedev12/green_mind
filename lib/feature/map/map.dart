@@ -19,7 +19,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../Utils.dart';
 import '../../data/models/address.dart';
-import '../../data/services/LocationService.dart';
+import '../../services/locationService.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -378,8 +378,6 @@ class _MapScreenState extends State<MapScreen> {
     return result;
   }
 
-  
-
   _clearPolygons() {
     setState(() {
       _polyLines.clear();
@@ -412,7 +410,7 @@ class _MapScreenState extends State<MapScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.5,
-          width: MediaQuery.of(context).size.height * 0.5,
+            width: MediaQuery.of(context).size.height * 0.5,
             padding: EdgeInsets.only(left: 20, right: 20, top: 20),
             child: Form(
               key: _formKey,
@@ -462,7 +460,7 @@ class _MapScreenState extends State<MapScreen> {
                                 if (value!.isEmpty) {
                                   return "ce champs ne doit pas être vide";
                                 }
-              
+
                                 return null;
                               },
                               controller: _fieldNameController,
@@ -473,8 +471,7 @@ class _MapScreenState extends State<MapScreen> {
                                 hintText: "Tapez le nom du champs",
                                 hintStyle: TextStyle(color: Colors.grey),
                                 focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.green),
+                                    borderSide: BorderSide(color: Colors.green),
                                     borderRadius: BorderRadius.circular(10)),
                                 contentPadding: EdgeInsets.all(10),
                                 border: InputBorder.none,
@@ -482,8 +479,7 @@ class _MapScreenState extends State<MapScreen> {
                                     borderSide: BorderSide(color: Colors.red),
                                     borderRadius: BorderRadius.circular(10)),
                                 enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.grey),
+                                    borderSide: BorderSide(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(10)),
                               ),
                             ),
@@ -497,8 +493,7 @@ class _MapScreenState extends State<MapScreen> {
                               Text(
                                 "Type de culture",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               SizedBox(
                                 child: Padding(
@@ -519,7 +514,7 @@ class _MapScreenState extends State<MapScreen> {
                                       if (value!.isEmpty) {
                                         return "ce champs ne doit pas être vide";
                                       }
-              
+
                                       return null;
                                     },
                                     keyboardType: TextInputType.multiline,
@@ -529,8 +524,7 @@ class _MapScreenState extends State<MapScreen> {
                                           "Tapez le type de culture de votre champs",
                                       suffixIcon:
                                           const Icon(Icons.arrow_drop_down),
-                                      hintStyle:
-                                          TextStyle(color: Colors.grey),
+                                      hintStyle: TextStyle(color: Colors.grey),
                                       focusedBorder: OutlineInputBorder(
                                           borderSide:
                                               BorderSide(color: Colors.green),
@@ -563,8 +557,7 @@ class _MapScreenState extends State<MapScreen> {
                               Text(
                                 "Date de la semence",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               SizedBox(
                                 child: Padding(
@@ -574,7 +567,7 @@ class _MapScreenState extends State<MapScreen> {
                                       if (value!.isEmpty) {
                                         return "ce champs ne doit pas être vide";
                                       }
-              
+
                                       return null;
                                     },
                                     controller: _dateController,
@@ -592,22 +585,21 @@ class _MapScreenState extends State<MapScreen> {
                                     keyboardType: TextInputType.multiline,
                                     maxLines: null,
                                     decoration: InputDecoration(
-                                        suffixIcon:
-                                            Icon(Icons.arrow_drop_down),
+                                        suffixIcon: Icon(Icons.arrow_drop_down),
                                         hintText:
                                             "Tapez la date de la semence pour cette culture",
                                         hintStyle:
                                             TextStyle(color: Colors.grey),
                                         focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.green),
+                                            borderSide:
+                                                BorderSide(color: Colors.green),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         contentPadding: EdgeInsets.all(10),
                                         border: InputBorder.none,
                                         enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.grey),
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         errorBorder: OutlineInputBorder(
@@ -627,8 +619,7 @@ class _MapScreenState extends State<MapScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Center(
-                      child: BlocBuilder<CreateFieldBloc, CreateFieldState>(
+                  Center(child: BlocBuilder<CreateFieldBloc, CreateFieldState>(
                     builder: (context, state) {
                       if (state is CreateFieldLoading) {
                         return MaterialButton(
@@ -641,7 +632,7 @@ class _MapScreenState extends State<MapScreen> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               latLngArray = convertToLatLngArray(_points);
-              
+
                               print("object");
                               print(latLngArray);
                               context.read<CreateFieldBloc>().add(
@@ -675,6 +666,7 @@ class _MapScreenState extends State<MapScreen> {
     }
     return const CircularProgressIndicator(color: Colors.white);
   }
+
   Widget buildDatePicker() => SizedBox(
         height: 180,
         child: CupertinoDatePicker(

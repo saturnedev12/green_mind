@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:greenmind/data/models/address.dart';
+import 'package:greenmind/data/models/citycab_info_window.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../components/info_window/custom_info_window.dart';
 import '../../components/info_window/custom_widow.dart';
 import '../../images_assets.dart';
-import '../models/address.dart';
-import '../models/citycab_info_window.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

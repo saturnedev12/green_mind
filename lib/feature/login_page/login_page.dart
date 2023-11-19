@@ -34,8 +34,8 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement initState
     _formController = FormController(
       productId: 0,
-      email: TextEditingController(text: ''),
-      password: TextEditingController(text: ''),
+      // email: TextEditingController(text: ''),
+      phoneNumber: TextEditingController(text: ''),
     );
     _passwordNotifier = ValueNotifier<bool>(false);
     _formKey = GlobalKey<FormState>();
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                           FormUtils.numberValidator(number: value),
                       inputFormatters: [
                         MaskTextInputFormatter(
-                            mask: '##-##-##-##-##',
+                            mask: '## ## ## ## ##',
                             filter: {'#': RegExp(r'[0-9]')})
                       ],
                     ),
@@ -164,67 +164,21 @@ class _LoginPageState extends State<LoginPage> {
                               ? null
                               : () {
                                   if (_formKey.currentState!.validate()) {
-                                    context.go('/otp');
-                                    // context.read<LoginCubit>().onSendData(
-                                    //     formController: _formController,
-                                    //     context: context);
+                                    // context.go('/otp');
+                                    context.read<LoginCubit>().onLogin(
+                                        formController: _formController,
+                                        context: context);
                                   }
 
                                   //context.go('/homePage');
                                 },
-                          text: 'Optenir le code',
+                          text: 'Obtenir le code',
                         );
                       },
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //       builder: (context) => ResetPassword(),
-                              //     ));
-                            },
-                            child: Text(
-                              'Mot de passe oublié?',
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface),
-                            )),
-                        TextButton(
-                            onPressed: () {
-                              context.go('/login/registration');
-                            },
-                            child: Text(
-                              'S\'inscrire',
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.surface),
-                            )),
-                      ],
-                    ),
-                    // CustomButtom(
-                    //   text: 'Explorer',
-                    //   textColor: Colors.grey[700],
-                    //   color: CupertinoColors.systemGrey3,
-                    //   onClick: () async {
-                    //     // UserModel.fromJson(UserModel.internal().toJson());
-                    //     // await LocalStorage().deleteUser();
-                    //     // Navigator.pushAndRemoveUntil(
-                    //     //     context,
-                    //     //     MaterialPageRoute(
-                    //     //       builder: (context) => Application(
-                    //     //           //explore: true,
-                    //     //           ),
-                    //     //     ),
-                    //     //     (route) => false);
-
-                    //     context.go('/app');
-                    //   },
-                    // )
                   ],
                 ),
               ),

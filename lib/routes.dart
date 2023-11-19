@@ -10,6 +10,7 @@ import 'package:greenmind/feature/login_page/login_page.dart';
 import 'package:greenmind/feature/login_page/otp_page.dart';
 import 'package:greenmind/feature/polygonal_page.dart/polygonal_page.dart';
 import 'package:greenmind/feature/vegetation_analyse/vegetation_analyse_page.dart';
+import 'package:greenmind/services/firebase_service.dart';
 import 'package:greenmind/tests/test_page.dart';
 import 'package:greenmind/tests/weather_detail_page.dart';
 
@@ -22,13 +23,17 @@ class AppRouter extends GoRouter {
             GoRoute(
               path: '/',
               builder: (BuildContext context, GoRouterState state) {
-                return LoginPage();
+                return (FireBaseService(context: context).userExiste())
+                    ? Home()
+                    : LoginPage();
               },
               routes: <RouteBase>[
                 GoRoute(
-                  path: 'otp',
+                  path: 'otp/:verificationId',
                   builder: (BuildContext context, GoRouterState state) {
-                    return OtpPage();
+                    return OtpPage(
+                      verificationId: state.pathParameters['verificationId']!,
+                    );
                   },
                 ),
                 GoRoute(

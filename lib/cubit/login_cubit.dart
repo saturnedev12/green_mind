@@ -5,10 +5,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:greenmind/cubit/app_states/app_state.dart';
+import 'package:greenmind/services/firebase_service.dart';
+import 'package:greenmind/utils/form_controller.dart';
 
 class LoginCubit extends Cubit<AppState> {
   LoginCubit() : super(InitialState());
-
+  onLogin(
+      {required FormController formController,
+      required BuildContext context}) async {
+    inspect(formController);
+    emit(PendingState());
+    await FireBaseService(context: context)
+        .checkPhone(phone: "+225${formController.phoneNumber!.text}");
+    emit(FinishState<bool>(data: true));
+  }
   // _login(
   //     {required FormController formController,
   //     required BuildContext context}) async {

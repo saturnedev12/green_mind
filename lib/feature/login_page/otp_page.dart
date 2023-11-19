@@ -1,12 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:greenmind/utils/app_dialog.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:go_router/go_router.dart';
 
 class OtpPage extends StatefulWidget {
-  OtpPage({Key? key, this.title}) : super(key: key);
-  final String? title;
+  OtpPage({Key? key, required this.verificationId}) : super(key: key);
+  final String verificationId;
 
   @override
   _OtpPageState createState() => _OtpPageState();
@@ -14,6 +17,7 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   OtpFieldController otpController = OtpFieldController();
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +55,7 @@ class _OtpPageState extends State<OtpPage> {
             ),
             OTPTextField(
                 controller: otpController,
-                length: 5,
+                length: 6,
                 width: MediaQuery.of(context).size.width,
                 textFieldAlignment: MainAxisAlignment.spaceAround,
                 fieldWidth: 45,
@@ -70,6 +74,17 @@ class _OtpPageState extends State<OtpPage> {
                 },
                 onCompleted: (pin) {
                   print("Completed: " + pin);
+                  PhoneAuthCredential credential = PhoneAuthProvider.credential(
+                      verificationId: widget.verificationId, smsCode: pin);
+                  auth
+                      .signInWithCredential(credential)
+                      .then((value) => context.replace('/home'))
+                      .onError(
+                        (error, stackTrace) => AppDialog.info(
+                            context: context,
+                            icon: Icon(Icons.info_outline),
+                            content: error.toString()),
+                      );
                 }),
           ],
         ),
