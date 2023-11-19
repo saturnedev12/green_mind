@@ -1,12 +1,16 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert' as convert;
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:geocoding/geocoding.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../components/info_window/custom_info_window.dart';
 import '../../components/info_window/custom_widow.dart';
 import '../../images_assets.dart';
@@ -16,7 +20,6 @@ import '../models/citycab_info_window.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'dart:ui' as ui;
-
 
 class Deley {
   final int? milliseconds;
@@ -57,8 +60,6 @@ class LocationService {
     return results;
   }
 
-  
-
   ValueNotifier<Set<Marker>> markers = ValueNotifier<Set<Marker>>({});
   ValueNotifier<Set<Marker>> trajetMarkers = ValueNotifier<Set<Marker>>({});
   ValueNotifier<Address?>? currentPosition = ValueNotifier<Address?>(null);
@@ -92,11 +93,12 @@ class LocationService {
               address.latLng!,
             );
           });
-      if (type != InfoWindowType.destination  || type != InfoWindowType.destination ) {
+      if (type != InfoWindowType.destination ||
+          type != InfoWindowType.destination) {
         markers.value.clear();
-      markers.value.add(marker);
+        markers.value.add(marker);
       }
-     
+
       controller!.addInfoWindow!(
         CustomWindow(
           info: CityCabInfoWindow(
@@ -109,7 +111,6 @@ class LocationService {
       );
 
       Timer(const Duration(seconds: 1), () => controller!.hideInfoWindow);
-    
 
       try {
         final markerPosition = markers.value
@@ -126,6 +127,7 @@ class LocationService {
       return markers.value;
     }
   }
+
   Future<Set<Marker>> addTrajetMarker(
       String markerId, Address? address, BitmapDescriptor icon, int size,
       {required DateTime time, required InfoWindowType type}) async {
@@ -153,11 +155,12 @@ class LocationService {
               address.latLng!,
             );
           });
-      if (type != InfoWindowType.destination  || type != InfoWindowType.destination ) {
+      if (type != InfoWindowType.destination ||
+          type != InfoWindowType.destination) {
         trajetMarkers.value.clear();
-      trajetMarkers.value.add(marker);
+        trajetMarkers.value.add(marker);
       }
-     
+
       controller!.addInfoWindow!(
         CustomWindow(
           info: CityCabInfoWindow(
@@ -170,7 +173,6 @@ class LocationService {
       );
 
       Timer(const Duration(seconds: 1), () => controller!.hideInfoWindow);
-    
 
       try {
         final markerPosition = trajetMarkers.value
@@ -247,5 +249,62 @@ class LocationService {
       polylines: polylines ?? [],
     );
     return address;
+  }
+
+  static Future<Position?> getCurrentLocation(
+      {required BuildContext context}) async {
+    // Check if location services are enabled
+    bool locationServiceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!locationServiceEnabled) {
+      // Location services are not enabled, show a dialog to request permission
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Location Services Disabled'),
+          content: Text(
+              'Please enable location services to access your current location.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              child: Text('Settings'),
+              onPressed: () => openAppSettings(),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Check if location permission is granted
+    LocationPermission permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      // Location permission is not granted, show a dialog to request permission
+      showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Location Permission Denied'),
+          content: Text(
+              'Please grant location permission to access your current location.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              child: Text('Settings'),
+              onPressed: () => openAppSettings(),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Get the current location
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return position;
   }
 }

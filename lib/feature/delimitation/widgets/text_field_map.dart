@@ -15,7 +15,7 @@ class TextFieldMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
         right: 55,
-        top: 15,
+        top: 120,
         child: ValueListenableBuilder<MODEDELIMITE>(
           valueListenable: MapUtils.mapNotifier,
           builder: (context, value, child) => (value == MODEDELIMITE.map)

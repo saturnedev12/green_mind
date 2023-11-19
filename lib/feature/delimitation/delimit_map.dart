@@ -42,11 +42,13 @@ class _DelimiteMapState extends State<DelimiteMap> {
     if (isLocationServiceEnabled) {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
+      ).then(
+        (value) {
+          MapUtils.currentPosition = value;
+          return value;
+        },
       );
       //_path.add(LatLng(position.latitude, position.longitude));
-      setState(() {
-        MapUtils.currentPosition = position;
-      });
     }
   }
 
@@ -55,33 +57,7 @@ class _DelimiteMapState extends State<DelimiteMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MapAppBar(),
-      // drawer: Drawer(
-      //   child: ListView(
-      //     children: [
-      //       Container(
-      //         height: 50,
-      //         decoration: BoxDecoration(
-      //             //color: Colors.red,
-      //             image: DecorationImage(
-      //                 image: AssetImage(
-      //                   'assets/images/greenmind.png',
-      //                 ),
-      //                 fit: BoxFit.cover)),
-      //       ),
-      //       Divider(),
-      //       ListTile(
-      //         title: Text('Élément 1'),
-      //         onTap: () {},
-      //       ),
-      //       ListTile(
-      //         title: Text('Élément 2'),
-      //         onTap: () {},
-      //       ),
-      //     ],
-      //   ),
-      // ),
-
+      // appBar: MapAppBar(),
       body: MapUtils.currentPosition != null
           ? Stack(
               children: [

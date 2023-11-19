@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:greenmind/data/models/weather_data_agregation_model.dart';
 import 'package:greenmind/feature/analyse/field/field_component.dart';
-import 'package:greenmind/feature/delimitation/map_sample.dart';
+import 'package:greenmind/feature/delimitation/delimit_map.dart';
 import 'package:greenmind/feature/home/home.dart';
 import 'package:greenmind/feature/login_page/login_page.dart';
+import 'package:greenmind/feature/login_page/otp_page.dart';
 import 'package:greenmind/feature/polygonal_page.dart/polygonal_page.dart';
 import 'package:greenmind/feature/vegetation_analyse/vegetation_analyse_page.dart';
 import 'package:greenmind/tests/test_page.dart';
@@ -21,13 +22,19 @@ class AppRouter extends GoRouter {
             GoRoute(
               path: '/',
               builder: (BuildContext context, GoRouterState state) {
-                return Home();
+                return LoginPage();
               },
               routes: <RouteBase>[
                 GoRoute(
-                  path: 'map',
+                  path: 'otp',
                   builder: (BuildContext context, GoRouterState state) {
-                    return MapScreen();
+                    return OtpPage();
+                  },
+                ),
+                GoRoute(
+                  path: 'home',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return Home();
                   },
                 ),
 

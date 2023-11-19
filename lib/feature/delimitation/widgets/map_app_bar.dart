@@ -32,6 +32,7 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
     return ValueListenableBuilder<MODEDELIMITE>(
       valueListenable: MapUtils.mapNotifier,
       builder: (context, value, child) => AppBar(
+        backgroundColor: Colors.red,
         // Définissez ici les propriétés de votre AppBar personnalisée
         //title: Text('Mon AppBar personnalisée'),
         // Autres propriétés...
@@ -128,6 +129,7 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
                     .displayPopupInfo(context: context);
               },
               child: Text('Terminer')),
+
           IconButton(
             onPressed: () async {
               await Future.sync(() {

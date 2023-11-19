@@ -255,8 +255,8 @@ class _PolygonalPageState extends State<PolygonalPage> {
                 child: Stack(
                   children: [
                     SizedBox(
-                      width: 1500,
-                      height: 1000,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -280,7 +280,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                   zoom:
                                       mapZoom, //getSurface() * 0.000193,markers: _markerMap,
                                 ),
-                                markers: {}, //_markerMap,
+                                markers: _markerMap,
                                 polygons: {
                                   Polygon(
                                     geodesic: true,
@@ -334,133 +334,157 @@ class _PolygonalPageState extends State<PolygonalPage> {
                           ),
                           Flexible(
                             flex: 2,
-                            child: DataTable(
-                              headingRowHeight: 50,
-                              headingRowColor: MaterialStatePropertyAll<Color>(
-                                  CupertinoColors.white),
-                              columns: [
-                                DataColumn(label: Text('Bornes')),
-                                DataColumn(
-                                  label: Text('X'),
-                                ),
-                                DataColumn(label: Text('Y')),
-                                // DataColumn(label: Text('ANOLES')),
-                                // DataColumn(label: Text('DISTANCES')),
-                              ],
-                              rows: _markers
-                                  .map<DataRow>((e) => DataRow(
-                                        color: MaterialStateProperty.all(
-                                            Colors.grey[300]),
-                                        cells: [
-                                          DataCell(
-                                              Text(e.infoWindow.title ?? 'KO')),
-                                          DataCell(Text(UTM
-                                              .fromLatLon(
-                                                  lat: e.position.latitude,
-                                                  lon: e.position.longitude)
-                                              .easting
-                                              .toStringAsFixed(3))),
-                                          DataCell(Text(UTM
-                                              .fromLatLon(
-                                                  lat: e.position.latitude,
-                                                  lon: e.position.longitude)
-                                              .northing
-                                              .toStringAsFixed(3))),
-                                          // DataCell(Text('')),
-                                          // DataCell(Text('')),
+                            child: ListView(
+                              children: [
+                                Container(
+                                  // height: MediaQuery.of(context).size.height,
+                                  child: Row(
+                                    children: [
+                                      DataTable(
+                                        headingRowHeight: 50,
+                                        headingRowColor:
+                                            MaterialStatePropertyAll<Color>(
+                                                CupertinoColors.white),
+                                        columns: [
+                                          DataColumn(label: Text('Bornes')),
+                                          DataColumn(
+                                            label: Text('X'),
+                                          ),
+                                          DataColumn(label: Text('Y')),
+                                          // DataColumn(label: Text('ANOLES')),
+                                          // DataColumn(label: Text('DISTANCES')),
                                         ],
-                                      ))
-                                  .toList(),
+                                        rows: _markers
+                                            .map<DataRow>((e) => DataRow(
+                                                  color:
+                                                      MaterialStateProperty.all(
+                                                          Colors.grey[300]),
+                                                  cells: [
+                                                    DataCell(Text(
+                                                        e.infoWindow.title ??
+                                                            'KO')),
+                                                    DataCell(Text(UTM
+                                                        .fromLatLon(
+                                                            lat: e.position
+                                                                .latitude,
+                                                            lon: e.position
+                                                                .longitude)
+                                                        .easting
+                                                        .toStringAsFixed(3))),
+                                                    DataCell(Text(UTM
+                                                        .fromLatLon(
+                                                            lat: e.position
+                                                                .latitude,
+                                                            lon: e.position
+                                                                .longitude)
+                                                        .northing
+                                                        .toStringAsFixed(3))),
+                                                    // DataCell(Text('')),
+                                                    // DataCell(Text('')),
+                                                  ],
+                                                ))
+                                            .toList(),
+                                      ),
+                                      Container(
+                                          width: 100,
+                                          padding: EdgeInsets.only(top: 3),
+                                          //color: Colors.red,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                color: Colors.white,
+                                                height: 51,
+                                                child: Center(
+                                                    child: Text('DISTANCES')),
+                                              ),
+                                              for (int i = 0;
+                                                  i < distances.length;
+                                                  i++)
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.grey[300],
+                                                    border: Border(
+                                                        bottom: BorderSide(
+                                                      color: Colors.white,
+                                                    )),
+                                                  ),
+                                                  height: (i == 0) ? 60.9 : 50,
+                                                  child: Center(
+                                                      child:
+                                                          Text(distances[i])),
+                                                ),
+                                            ],
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Container(
-                              width: 100,
-                              //color: Colors.red,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    color: Colors.white,
-                                    height: 51,
-                                    child: Center(child: Text('DISTANCES')),
-                                  ),
-                                  for (int i = 0; i < distances.length; i++)
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        border: Border(
-                                            bottom: BorderSide(
-                                          color: Colors.white,
-                                        )),
-                                      ),
-                                      height: (i == 0) ? 70.9 : 50,
-                                      child: Center(child: Text(distances[i])),
-                                    ),
-                                ],
-                              ))
                         ],
                       ),
                     ),
-                    Positioned(
-                      bottom: 5,
-                      child: ClipRect(
-                        // <-- clips to the 200x200 [Container] below
-                        child: BackdropFilter(
-                          filter: ui.ImageFilter.blur(
-                            sigmaX: 5.0,
-                            sigmaY: 5.0,
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            width: 1500,
-                            height: 1000,
-                            child: Container(
-                              width: 330,
-                              height: 320,
-                              padding: EdgeInsets.all(5).copyWith(top: 10),
-                              decoration: BoxDecoration(
-                                  color: CupertinoColors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      blurRadius: 5,
-                                      spreadRadius: 1,
-                                      color: Colors.grey,
-                                    )
-                                  ]),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Icon(
-                                    Icons.lock_clock,
-                                    size: 40,
-                                    color: CupertinoColors.systemGrey,
-                                  ),
-                                  Text(
-                                    'Veuillez régler la facture pour pouvoir voir entièrement la delimitation de ce champ avec les bornes, des distances entre les bornes, le tableau et enregistrer le document.',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  Text(
-                                    '3000 FCFA',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      log("HELLO");
-                                    },
-                                    child: Text(
-                                      'Payer maintenant',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Positioned(
+                    //   bottom: 5,
+                    //   child: ClipRect(
+                    //     // <-- clips to the 200x200 [Container] below
+                    //     child: BackdropFilter(
+                    //       filter: ui.ImageFilter.blur(
+                    //         sigmaX: 5.0,
+                    //         sigmaY: 5.0,
+                    //       ),
+                    //       child: Container(
+                    //         alignment: Alignment.center,
+                    //         width: 1500,
+                    //         height: 1000,
+                    //         child: Container(
+                    //           width: 330,
+                    //           height: 320,
+                    //           padding: EdgeInsets.all(5).copyWith(top: 10),
+                    //           decoration: BoxDecoration(
+                    //               color: CupertinoColors.white,
+                    //               borderRadius: BorderRadius.circular(8),
+                    //               boxShadow: [
+                    //                 BoxShadow(
+                    //                   blurRadius: 5,
+                    //                   spreadRadius: 1,
+                    //                   color: Colors.grey,
+                    //                 )
+                    //               ]),
+                    //           child: Column(
+                    //             mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceBetween,
+                    //             children: [
+                    //               Icon(
+                    //                 Icons.lock_clock,
+                    //                 size: 40,
+                    //                 color: CupertinoColors.systemGrey,
+                    //               ),
+                    //               Text(
+                    //                 'Veuillez régler la facture pour pouvoir voir entièrement la delimitation de ce champ avec les bornes, des distances entre les bornes, le tableau et enregistrer le document.',
+                    //                 textAlign: TextAlign.center,
+                    //               ),
+                    //               Text(
+                    //                 '3000 FCFA',
+                    //                 style:
+                    //                     TextStyle(fontWeight: FontWeight.bold),
+                    //               ),
+                    //               ElevatedButton(
+                    //                 onPressed: () {
+                    //                   log("HELLO");
+                    //                 },
+                    //                 child: Text(
+                    //                   'Payer maintenant',
+                    //                   style: TextStyle(color: Colors.white),
+                    //                 ),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
