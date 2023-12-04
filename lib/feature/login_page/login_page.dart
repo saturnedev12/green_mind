@@ -163,7 +163,10 @@ class _LoginPageState extends State<LoginPage> {
                           onClick: ((state is PendingState))
                               ? null
                               : () {
+                                
                                   if (_formKey.currentState!.validate()) {
+                                    print("object");
+                                    
                                     // context.go('/otp');
                                     context.read<LoginCubit>().onLogin(
                                         formController: _formController,
@@ -189,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 50,
             child: Center(
               child: Text(
-                '©GreenMindé•2023',
+                '©GREENMIND•2023',
                 style: TextStyle(color: Color.fromARGB(255, 182, 181, 181)),
               ),
             )),

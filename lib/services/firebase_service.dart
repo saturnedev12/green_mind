@@ -21,6 +21,7 @@ class FireBaseService {
   }
 
   Future checkPhone({required String phone}) async {
+    
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       verificationCompleted: (PhoneAuthCredential credential) {
@@ -29,16 +30,15 @@ class FireBaseService {
             .signInWithCredential(credential)
             .then((value) => context.replace('/home'))
             .onError(
-              (error, stackTrace) => AppDialog.info(
-                  context: context,
-                  icon: Icon(Icons.info_outline),
-                  content: error.toString()),
+              (error, stackTrace) => print('test'),
             );
       },
       verificationFailed: (FirebaseAuthException e) {
-        log("Verification Failed");
+        print('ici');
+        print(e.message);
+        log(e.message.toString());
         AppDialog.info(
-            context: context, icon: Icon(Icons.info_outline), content: e.code);
+            context: context, icon: Icon(Icons.info_outline), content: e.message.toString());
       },
       codeSent: (String verificationId, int? resendToken) {
         log("Verification code send");

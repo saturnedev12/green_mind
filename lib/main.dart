@@ -40,6 +40,7 @@ Future<void> _getCurrentLocation() async {
       (value) {
         MapUtils.currentPosition = value;
         return value;
+        
       },
     );
     //_path.add(LatLng(position.latitude, position.longitude));
