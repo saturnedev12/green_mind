@@ -9,128 +9,111 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class VegetationAnalysePage extends StatelessWidget {
+class VegetationAnalysePage extends StatefulWidget {
+  @override
+  State<VegetationAnalysePage> createState() => _VegetationAnalysePageState();
+}
+
+class _VegetationAnalysePageState extends State<VegetationAnalysePage> {
   @override
   Widget build(BuildContext context) {
+    List<bool> isSelected = [false, false, false];
     return Scaffold(
-        //backgroundColor: CupertinoColors.systemFill,
-        appBar: AppBar(
-          title: Text('Analyse du sole'),
-        ),
-        body: SingleChildScrollView(
-          child: Row(
-            children: [
-              Column(
-                children: [
-                  SizedBox(
-                    width: 300,
-                    height: 300,
-                    child: SimpleMap(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
+        body: Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          color: Colors.amber,
+          child: Column(children: [
+            Container(
+              padding: EdgeInsets.only(left: 30),
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
                       children: [
-                        SizedBox(
-                          width: 300,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Faible végétation'),
-                              Text('Haute'),
-                            ],
-                          ),
+                        Text(
+                          "Champs : ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          width: 300,
-                          child: LinearPercentIndicator(
-                            linearGradient: LinearGradient(colors: [
-                              Colors.red,
-                              Colors.orange,
-                              Colors.yellow,
-                              Colors.green
-                            ]),
-                            animation: true,
-                            percent: 0.7,
-
-                            //progressColor: Colors.purple,
-                          ),
+                          width: 30,
                         ),
+                        Text("Champs de palm",
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Icon(Icons.arrow_drop_down)
                       ],
                     ),
-                  ),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade400,
-                            offset: Offset.zero,
-                            blurRadius: 10,
-                            spreadRadius: 0.5,
-                          )
-                        ]),
-                    child: TableCalendar(
-                      firstDay: DateTime.utc(2010, 10, 16),
-                      lastDay: DateTime.utc(2030, 10, 16), // DateTime.now(),
-                      focusedDay: DateTime.now(),
-                      selectedDayPredicate: (day) {
-                        return isSameDay(DateTime.now(), day);
-                      },
-                      // onDaySelected: (selectedDay, focusedDay) {
-                      //   context
-                      //       .read<BusinessCubit>()
-                      //       .onGetRideByDay(context: context, date: selectedDay);
-                      //   context
-                      //       .read<GetSumCubit>()
-                      //       .onGetRideSum(context: context, date: selectedDay);
-                      //   setState(() {
-                      //     _focusedDay = selectedDay;
-                      //     _focusedDay =
-                      //         focusedDay; // update `_focusedDay` here as well
-                      //   });
-                      // },
+                    Image.asset(
+                      'assets/icons/search.png',
+                      scale: 20,
                     ),
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  WeatherSmallBox(
-                    weatherDataAgregationModel: WeatherDataAgregationModel(
-                        date: '29',
-                        tempAirMin: 19,
-                        tempAirMax: 29,
-                        tempLandMin: 14,
-                        tempLandMax: 19,
-                        relHumidity: 19,
-                        snowDepth: 10,
-                        rain: Rain(
-                            h02: 1,
-                            h05: 2,
-                            h08: 3,
-                            h11: 4,
-                            h14: 5,
-                            h17: 6,
-                            h20: 7,
-                            h23: 8),
-                        windSpeed: WindSpeed(
-                            h02: 1,
-                            h05: 2,
-                            h08: 3,
-                            h11: 3,
-                            h14: 4,
-                            h17: 5,
-                            h20: 6,
-                            h23: 8)),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ));
+                    Image.asset(
+                      'assets/icons/list.png',
+                      scale: 30,
+                    ),
+                  ]),
+            ),
+            SizedBox(
+              height: 1,
+            ),
+            Container(
+              height: 250,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(left: 20, top: 20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Zone d'observation",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey.withOpacity(0.3)),
+                        child: Row(
+                          children: [],
+                        )),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text("Date de la dernière observation",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10,),
+                    Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        Icon(Icons.date_range),
+                        SizedBox(width: 8),
+                        Text("22 dec 2023")
+                      ]),
+                    )
+                  ]),
+            )
+          ]),
+        )
+      ],
+    ));
   }
 }
 
