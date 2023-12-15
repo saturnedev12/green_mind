@@ -13,10 +13,14 @@ class SimpleMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapOptions(
-          center: center ?? LatLng(5.281413, -4.143337),
-          zoom: 16.5,
+          center: (points != null )? points![0] : LatLng(5.281413, -4.143337),
+          zoom: 18,
+         maxZoom: 20,
+
+          enableScrollWheel: true,
+          enableMultiFingerGestureRace: true,
           onTap: ((tapPosition, point) => log(point.toString()))),
-      nonRotatedChildren: [
+      /*nonRotatedChildren: [
         RichAttributionWidget(
           attributions: [
             TextSourceAttribution(
@@ -26,7 +30,7 @@ class SimpleMap extends StatelessWidget {
             ),
           ],
         ),
-      ],
+      ],*/
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',

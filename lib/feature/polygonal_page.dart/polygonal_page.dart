@@ -15,8 +15,11 @@ import 'package:latlong2/latlong.dart' as opens;
 import 'package:test/test.dart';
 
 class PolygonalPage extends StatefulWidget {
-  const PolygonalPage({super.key, required this.paths});
-  final List<LatLng> paths;
+  const PolygonalPage({
+    super.key,
+    this.paths,
+  });
+  final List<LatLng>? paths;
 
   @override
   State<PolygonalPage> createState() => _PolygonalPageState();
@@ -42,36 +45,35 @@ class _PolygonalPageState extends State<PolygonalPage> {
     return customMarkerIcon;
   }
 
-  // List<LatLng> paths = [
-  //   LatLng(5.2800899816145135, -4.1450368613004684),
-  //   LatLng(5.280310992566902, -4.141850396990776),
-  //   LatLng(5.2830045154847465, -4.142181985080242),
-  //   LatLng(5.2827965257211495, -4.143986776471138),
-  //   LatLng(5.281315222608827, -4.144642241299152),
-  //   LatLng(5.281318227284025, -4.145294688642025),
-  //   LatLng(5.2800899816145135, -4.1450368613004684),
-  // ];
+  List<LatLng> paths = [
+    LatLng(5.2800899816145135, -4.1450368613004684),
+    LatLng(5.280310992566902, -4.141850396990776),
+    LatLng(5.2830045154847465, -4.142181985080242),
+    LatLng(5.2827965257211495, -4.143986776471138),
+    LatLng(5.281315222608827, -4.144642241299152),
+    LatLng(5.281318227284025, -4.145294688642025),
+    LatLng(5.2800899816145135, -4.1450368613004684),
+  ];
   List<String> distances = [];
 
   /// ajouter des markers
   Future<void> _addMarkers() async {
     await Future.sync(() async {
-      widget.paths.asMap().forEach((key, value) async {
+      paths.asMap().forEach((key, value) async {
         BitmapDescriptor customMarker = await _genereateCustomMarkertext(
-            text: (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1');
+            text: (key != (paths.length - 1)) ? 'B${key + 1}' : 'B1');
         _markers.add(
           Marker(
             markerId: MarkerId(key.toString()),
             position: value,
             icon: customMarker,
             infoWindow: InfoWindow(
-                title:
-                    (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1'),
+                title: (key != (paths.length - 1)) ? 'B${key + 1}' : 'B1'),
           ),
         );
-        if (key != (widget.paths.length - 1)) {
+        if (key != (paths.length - 1)) {
           BitmapDescriptor customMarker = await _genereateCustomMarkertext(
-              text: (key != (widget.paths.length - 1)) ? 'B${key + 1}' : 'B1');
+              text: (key != (paths.length - 1)) ? 'B${key + 1}' : 'B1');
           _markerMap.add(
             Marker(
               markerId: MarkerId(key.toString()),
@@ -97,11 +99,11 @@ class _PolygonalPageState extends State<PolygonalPage> {
       //   // MapUtils.markers.remove(MapUtils.markerToShow.last);
       //   // MapUtils.markerToShow.removeLast();
       // }
-      if (widget.paths.length >= 2) {
+      if (paths.length >= 2) {
         MapUtils.distanceMarkerCounter += 1;
-        for (int i = 0; i < widget.paths.length - 1; i++) {
-          LatLng startPoint = widget.paths[i];
-          LatLng endPoint = widget.paths[i + 1];
+        for (int i = 0; i < paths.length - 1; i++) {
+          LatLng startPoint = paths[i];
+          LatLng endPoint = paths[i + 1];
           // distance entre les deux points
           num distance = mp.SphericalUtil.computeDistanceBetween(
               mp.LatLng(startPoint.latitude, startPoint.longitude),
@@ -146,12 +148,12 @@ class _PolygonalPageState extends State<PolygonalPage> {
     double latSum = 0.0;
     double lngSum = 0.0;
 
-    for (LatLng point in widget.paths) {
+    for (LatLng point in paths) {
       latSum += point.latitude;
       lngSum += point.longitude;
     }
 
-    return LatLng(latSum / widget.paths.length, lngSum / widget.paths.length);
+    return LatLng(latSum / paths.length, lngSum / paths.length);
   }
 
   void _fitBounds() {
@@ -165,7 +167,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
     double maxLat = -double.infinity;
     double maxLng = -double.infinity;
 
-    for (LatLng point in widget.paths) {
+    for (LatLng point in paths) {
       minLat = math.min(minLat, point.latitude);
       minLng = math.min(minLng, point.longitude);
       maxLat = math.max(maxLat, point.latitude);
@@ -180,7 +182,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
 
   /// recuperer le perimètre
   double getSurface() {
-    List<mp.LatLng> newPath = widget.paths
+    List<mp.LatLng> newPath = paths
         .map(
           (e) => mp.LatLng(e.latitude, e.longitude),
         )
@@ -213,6 +215,20 @@ class _PolygonalPageState extends State<PolygonalPage> {
 
   @override
   void initState() {
+    if (widget.paths != null) {
+      widget.paths!.add(widget.paths![0]);
+    }
+
+    paths = widget.paths ??
+        [
+          LatLng(5.2800899816145135, -4.1450368613004684),
+          LatLng(5.280310992566902, -4.141850396990776),
+          LatLng(5.2830045154847465, -4.142181985080242),
+          LatLng(5.2827965257211495, -4.143986776471138),
+          LatLng(5.281315222608827, -4.144642241299152),
+          LatLng(5.281318227284025, -4.145294688642025),
+          LatLng(5.2800899816145135, -4.1450368613004684),
+        ];
     log(getSurface().toString(), name: 'surface');
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,
@@ -227,17 +243,18 @@ class _PolygonalPageState extends State<PolygonalPage> {
         .then((value) => setState(
               () {},
             ));
-    openPoints = MapFunctions.convertToLatLng2(widget.paths);
+    openPoints = MapFunctions.convertToLatLng2(paths);
     super.initState();
   }
 
   @override
   void dispose() {
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    // ]);
     _markerMap.clear();
     _markers.clear();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     super.dispose();
   }
 
@@ -261,7 +278,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Flexible(
-                            flex: 3,
+                            flex: 4,
                             child: Stack(children: [
                               GoogleMap(
                                 zoomGesturesEnabled: true,
@@ -285,7 +302,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                   Polygon(
                                     geodesic: true,
                                     polygonId: PolygonId('myPolygon'),
-                                    points: widget.paths,
+                                    points: paths,
                                     fillColor: Colors.blue.withOpacity(0.5),
                                     strokeColor: Colors.blue,
                                     strokeWidth: 2,
@@ -322,7 +339,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                 //     Polygon(
                                 //       geodesic: true,
                                 //       polygonId: PolygonId('myPolygon'),
-                                //       points: widget.paths,
+                                //       points: paths,
                                 //       fillColor: Colors.blue.withOpacity(0.5),
                                 //       strokeColor: Colors.blue,
                                 //       strokeWidth: 2,
@@ -339,6 +356,8 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                 Container(
                                   // height: MediaQuery.of(context).size.height,
                                   child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       DataTable(
                                         headingRowHeight: 50,
@@ -387,8 +406,9 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                       ),
                                       Container(
                                           width: 100,
-                                          padding: EdgeInsets.only(top: 3),
-                                          //color: Colors.red,
+                                          //padding: EdgeInsets.only(top: 3),
+                                          //height: double.infinity,
+                                          color: Colors.white,
                                           child: Column(
                                             children: [
                                               Container(
@@ -408,7 +428,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
                                                       color: Colors.white,
                                                     )),
                                                   ),
-                                                  height: (i == 0) ? 60.9 : 50,
+                                                  height: (i == 0) ? 70.9 : 50,
                                                   child: Center(
                                                       child:
                                                           Text(distances[i])),
@@ -492,7 +512,7 @@ class _PolygonalPageState extends State<PolygonalPage> {
           ],
         ),
       ),
-      floatingActionButton: Column(
+/*      floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Padding(
@@ -529,6 +549,6 @@ class _PolygonalPageState extends State<PolygonalPage> {
           ),
         ],
       ),
-    );
+   */ );
   }
 }

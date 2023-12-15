@@ -1,16 +1,36 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:greenmind/data/models/firebase_field.dart';
 import 'package:greenmind/feature/map/simple_map.dart';
+import 'package:greenmind/maplib/maplib.dart';
+import 'package:greenmind/services/firestore_services.dart';
+import 'package:maps_toolkit/maps_toolkit.dart' as mp;
 
-class FieldCard extends StatelessWidget {
-  const FieldCard({super.key});
+class FieldCard extends StatefulWidget {
+  const FieldCard({super.key, required this.field});
+  final FireBaseField field;
+
 
   @override
+  State<FieldCard> createState() => _FieldCardState();
+}
+
+class _FieldCardState extends State<FieldCard> {
+  late final surface;
+  @override
+  void initState() {
+     surface = mp.SphericalUtil.computeArea(FireStoreServices.createListeFromCordinate3(widget.field.polygone!));
+
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return      Container(
       width: 350,
       height: 330,
-      margin: EdgeInsets.all(20),
+      //margin: EdgeInsets.all(20),
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: CupertinoColors.white,
@@ -28,13 +48,16 @@ class FieldCard extends StatelessWidget {
           Stack(
             children: [
               Container(
-                width: 380,
-                height: 250,
+                width: double.infinity,
+                height: 350,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.red,
                 ),
-                child: SimpleMap(),
+                child: SimpleMap(
+                  points: FireStoreServices.createListeFromCordinate2(
+                      widget.field.polygone!),
+                ),
               ),
               Positioned(
                 left: 10,
@@ -48,7 +71,11 @@ class FieldCard extends StatelessWidget {
                         onPressed: null,
                         icon: Icon(Icons.arrow_outward_rounded),
                         label: Text('0.17')),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.go('/polygonal',
+                          extra: FireStoreServices.createListeFromCordinate(
+                              widget.field.polygone!));
+                    },
                   ),
                 ),
               )
@@ -64,7 +91,7 @@ class FieldCard extends StatelessWidget {
                   height: 40,
                   child: CupertinoListTile(
                     padding: EdgeInsets.zero,
-                    title: Text('Champ de maïs'),
+                    title: Text(widget.field.fieldname ?? 'Pas de nom'),
                     subtitle: Text('Récolte le 23 Mai'),
                   ),
                 ),
@@ -81,7 +108,8 @@ class FieldCard extends StatelessWidget {
                           Icons.crop_outlined,
                           size: 15,
                         ),
-                        Text('20 ha'),
+                        SizedBox(width: 10,),
+                        Text(MapDisplayFunction(context: context).convertSurface(surface)),
                       ],
                     )
                   ],
@@ -92,5 +120,8 @@ class FieldCard extends StatelessWidget {
         ],
       ),
     );
+
   }
 }
+
+

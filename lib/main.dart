@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:greenmind/cubit/field_cubit.dart';
 import 'package:greenmind/cubit/login_cubit.dart';
 import 'package:greenmind/data/bloc/weather_cubit.dart';
 import 'package:greenmind/data/repository/field/field_repository.dart';
@@ -91,6 +92,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<LoginCubit>(
             create: (context) => LoginCubit(),
+          ),
+          BlocProvider<FieldCubit>(
+            create: (context) => FieldCubit(),
           )
         ],
         child: MaterialApp.router(

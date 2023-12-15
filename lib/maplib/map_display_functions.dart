@@ -95,6 +95,7 @@ class MapDisplayFunction {
   }
 
   String convertDistance(num distance) {
+
     if (distance < 1000) {
       return '${distance.toStringAsFixed(3)} m';
     } else {

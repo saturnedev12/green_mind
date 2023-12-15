@@ -128,7 +128,7 @@ class MapAppBar extends StatelessWidget implements PreferredSizeWidget {
                 MapDisplayFunction(context: context)
                     .displayPopupInfo(context: context);
               },
-              child: Text('Terminer')),
+              child: Text('Terminers')),
 
           IconButton(
             onPressed: () async {
